@@ -12,5 +12,6 @@ import SplashScreen from './sections/SplashScreen.vue';
 body, html {
 	margin: 0;
 	padding: 0;
+	font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 </style>
