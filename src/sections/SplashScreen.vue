@@ -9,7 +9,6 @@ const displayedSkill: Ref<string> = ref<string>('')
 const isVisible: Ref<boolean> = ref<boolean>(false)
 
 watch(skill, (newSkill, oldSkill) => {
-	console.log('skill changed:', { newSkill, oldSkill, displayedSkill: displayedSkill.value })
 	if (!newSkill) {
 		// Skill cleared - slide out
 		isVisible.value = false
@@ -18,14 +17,12 @@ watch(skill, (newSkill, oldSkill) => {
 		}, 300) // Wait for slide-out animation
 	} else if (!displayedSkill.value) {
 		// First skill - slide in immediately
-		console.log('First skill, sliding in')
 		displayedSkill.value = newSkill
 		setTimeout(() => {
 			isVisible.value = true
 		}, 10) // Small delay to ensure DOM is ready
 	} else {
 		// Skill changed - slide out, update, slide in
-		console.log('Skill changed, animating')
 		isVisible.value = false
 		setTimeout(() => {
 			displayedSkill.value = newSkill

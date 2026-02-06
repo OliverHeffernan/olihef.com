@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import SplashScreen from './sections/SplashScreen.vue';
+import { RouterView } from 'vue-router';
 </script>
 
 <template>
-	<SplashScreen />
+	<RouterView />
 </template>
 
 <style>

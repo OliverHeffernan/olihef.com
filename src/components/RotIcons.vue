@@ -20,6 +20,10 @@ function setPause(value: boolean, skillKey: string) {
 	}
 }
 
+// convert Info.skills to an array of values
+const skillsArray = Array.from(Info.skills.values())
+skillsArray.push(...skillsArray)
+
 setInterval(() => {
 	if (pause && speed > 0) {
 		speed -= acceleration
@@ -32,9 +36,9 @@ setInterval(() => {
 <template>
 	<div class="rotate" :style="{ transform: `rotate(${angle}deg)` }">
 		<RotIcon
-			v-for="(skill, index) in Info.skills.values()"
+			v-for="(skill, index) in skillsArray"
 			:key="index"
-			:startAngle="index * (360 / Info.skillCount)"
+			:startAngle="index * (360 / skillsArray.length)"
 			:icon="skill.icon"
 			:offset="angle"
 			@hoverEnter="setPause(true, skill.key)"

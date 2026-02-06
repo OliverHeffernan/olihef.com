@@ -3,4 +3,5 @@ export default interface Project {
 	description: string
 	skills: string[]
 	githubLink?: string
+	steamLink?: string
 }
