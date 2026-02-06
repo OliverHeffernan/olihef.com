@@ -8,20 +8,27 @@
 		}"
 		v-if="skill"
 	>
-		<i v-if="!fullScreen" class="fa-solid fa-expand" @click="fullScreen = true"></i>
-
-		<i v-if="fullScreen" class="fa-solid fa-compress" @click="fullScreen = false"></i>
-		<div class="title">
-			<img :src="`https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${skill.icon}.svg`" />
-			<h2>{{ skill.name }}</h2>
+		<div class="button-container">
+			<i v-if="!fullScreen" class="fa-solid fa-expand exButton" @click="fullScreen = true"></i>
+			<i v-if="fullScreen" class="fa-solid fa-compress exButton" @click="fullScreen = false"></i>
 		</div>
-		<ProjectContainer v-for="project in projects" :key="project.title" :project="project" />
+		<div class="content">
+			<div class="title">
+				<img :src="`https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${skill.icon}.svg`" />
+				<h2>{{ skill.name }}</h2>
+			</div>
+			<ProjectSlideShow
+				:projects="projects"
+				:fullScreen="fullScreen"
+			/>
+		</div>
 	</div>
 </template>
 <script setup lang="ts">
-import { ref, type Ref } from 'vue'
+import { ref, watch, type Ref } from 'vue'
 import Info from '@/classes/Info'
-import ProjectContainer from './ProjectContainer.vue'
+import ProjectSlideShow from './ProjectSlideShow.vue'
+
 const props = defineProps<{
 	skillKey: string
 	visible: boolean
@@ -29,19 +36,27 @@ const props = defineProps<{
 
 const fullScreen: Ref<boolean> = ref(false)
 
+// Disable body scroll when fullscreen
+watch(fullScreen, (isFullScreen) => {
+	if (isFullScreen) {
+		document.body.style.overflow = 'hidden'
+	} else {
+		document.body.style.overflow = ''
+	}
+})
+
 const skill = Info.skills.get(props.skillKey)
 const projects = Info.projects.filter((project) => project.skills.includes(props.skillKey))
 </script>
 <style scoped>
 .skill-container {
-	position: fixed;
+	position: absolute;
 	box-sizing: border-box;
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
-	padding: 20px;
 	top: -100%;
-	background-color: rgb(240, 240, 240);
+	background-color: var(--bg);
+	border: 1px solid var(--border);
 	transition:
 		top 0.3s ease-out,
 		width 0.3s ease-out,
@@ -50,14 +65,32 @@ const projects = Info.projects.filter((project) => project.skills.includes(props
 		transform 0.3s ease-out,
 		border-radius 0.3s ease-out;
 	border-radius: 20px;
-	overflow: auto;
+	overflow: hidden;
+}
+
+.button-container {
+	position: absolute;
+	top: 0;
+	right: 0;
+	z-index: 10;
+	padding: 20px;
+}
+
+.content {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding: 20px;
+	height: 100%;
+	overflow: hidden;
 }
 
 .small {
 	width: min(calc(100% - 20px), 500px);
 	left: 50%;
 	transform: translateX(-50%);
-	height: 30%;
+	height: 290px;
+	overflow: hidden;
 }
 
 .fullScreen {
@@ -66,7 +99,7 @@ const projects = Info.projects.filter((project) => project.skills.includes(props
 	left: 0;
 	top: 0 !important;
 	transform: none;
-	z-index: 1000;
+	z-index: 1001;
 	padding: none;
 	border-radius: 0;
 }
@@ -84,5 +117,10 @@ const projects = Info.projects.filter((project) => project.skills.includes(props
 .skill-container img {
 	width: 70px;
 	height: 70px;
+}
+
+.exButton {
+	font-size: 20px;
+	cursor: pointer;
 }
 </style>

@@ -60,9 +60,14 @@ const emit = defineEmits<{
 	border-radius: 10px;
 	display: block;
 	pointer-events: none;
+
+	border: 1px solid var(--border);
+	background-color: var(--bg);
+	transition: background-color 0.3s ease, scale 0.3s ease;
 }
 
 .icon:hover img {
-	background-color: rgb(240, 240, 240);
+	background-color: var(--border);
+	scale: 1.1;
 }
 </style>

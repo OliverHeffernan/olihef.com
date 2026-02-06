@@ -44,13 +44,13 @@ export default class Info {
 		},
 		{
 			title: 'Lone Wolf: WW2',
-			description: 'It is the dawn of World War 2 and you just joined the Royal Air Force! Fly over Europe and Northern Africa fighting against the enemy forces from above. Can you defeat the enemy and win the war?',
+			description: 'A game set in World War 2, where player is an RAF pilot. Co-developed with my brother. Available on Steam.',
 			skills: ['unity'],
 			steamLink: 'https://store.steampowered.com/app/1399180/Lone_Wolf_World_War_2/',
 		},
 		{
 			title: 'Ludwig-AI',
-			description: 'A CLI-based AI task orchestrator that automates project work through pluggable AI client integrations. Co-developed with my brother.',
+			description: 'A CLI-based AI task orchestrator that automates project work. Co-developed with my brother.',
 			skills: ['go'],
 			githubLink: 'https://github.com/AlexanderHeffernan/Ludwig-AI',
 		}
