@@ -1,10 +1,51 @@
 <script setup lang="ts">
+import { ref, watch } from 'vue'
+import type { Ref } from 'vue'
 import RotIcons from '@/components/RotIcons.vue'
+import SkillContainer from '@/components/SkillContainer.vue'
+
+const skill: Ref<string> = ref<string>('')
+const displayedSkill: Ref<string> = ref<string>('')
+const isVisible: Ref<boolean> = ref<boolean>(false)
+
+watch(skill, (newSkill, oldSkill) => {
+	console.log('skill changed:', { newSkill, oldSkill, displayedSkill: displayedSkill.value })
+	if (!newSkill) {
+		// Skill cleared - slide out
+		isVisible.value = false
+		setTimeout(() => {
+			displayedSkill.value = ''
+		}, 300) // Wait for slide-out animation
+	} else if (!displayedSkill.value) {
+		// First skill - slide in immediately
+		console.log('First skill, sliding in')
+		displayedSkill.value = newSkill
+		setTimeout(() => {
+			isVisible.value = true
+		}, 10) // Small delay to ensure DOM is ready
+	} else {
+		// Skill changed - slide out, update, slide in
+		console.log('Skill changed, animating')
+		isVisible.value = false
+		setTimeout(() => {
+			displayedSkill.value = newSkill
+			setTimeout(() => {
+				isVisible.value = true
+			}, 10)
+		}, 300) // Wait for slide-out animation
+	}
+})
 </script>
 <template>
 	<div class="splash-screen">
+		<SkillContainer
+			v-if="displayedSkill"
+			:key="displayedSkill"
+			:skillKey="displayedSkill"
+			:visible="isVisible"
+		/>
 		<div class="icon-container">
-			<RotIcons />
+			<RotIcons @skillChange="skill = $event" />
 		</div>
 		<div class="headBorder">
 			<div class="content">

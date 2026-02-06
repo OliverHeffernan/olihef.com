@@ -5,12 +5,20 @@ const props = defineProps<{
 	icon: string
 }>()
 
-const emit = defineEmits(['hoverEnter', 'hoverLeave'])
+const emit = defineEmits<{
+	(event: 'hoverEnter'): void;
+	(event: 'hoverLeave'): void;
+}>()
+
 </script>
 <template>
 	<div class="parent">
 		<div class="rotating" :style="{ transform: `rotate(${props.startAngle}deg)` }">
-			<div class="icon" @mouseenter="emit('hoverEnter')" @mouseleave="emit('hoverLeave')">
+			<div
+				class="icon"
+				@mouseenter="emit('hoverEnter')"
+				@mouseleave="emit('hoverLeave')"
+			>
 				<img :src="`https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${icon}.svg`" />
 			</div>
 		</div>

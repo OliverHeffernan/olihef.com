@@ -1,16 +1,23 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import Info from '@/classes/Info';
-import RotIcon from './RotIcon.vue';
+import type { Ref } from 'vue'
+import Info from '@/classes/Info'
+import RotIcon from './RotIcon.vue'
+const emit = defineEmits<{
+	(event: 'skillChange', skillKey: string): void
+}>()
 
 const topSpeed = 0.07
 var speed = topSpeed
 const acceleration = 0.001
-const angle = ref(0)
+const angle: Ref<number> = ref<number>(0)
 let pause = false
 
-function setPause(value: boolean) {
+function setPause(value: boolean, skillKey: string) {
 	pause = value
+	if (value) {
+		emit('skillChange', skillKey)
+	}
 }
 
 setInterval(() => {
@@ -20,19 +27,18 @@ setInterval(() => {
 		speed += acceleration
 	}
 	angle.value += speed
-	console.log(angle.value)
 }, 8)
-
 </script>
 <template>
 	<div class="rotate" :style="{ transform: `rotate(${angle}deg)` }">
 		<RotIcon
-			v-for="(skill, index) in Info.skills.values()" :key="index"
-			:startAngle="index * (360 / (Info.skillCount))"
+			v-for="(skill, index) in Info.skills.values()"
+			:key="index"
+			:startAngle="index * (360 / Info.skillCount)"
 			:icon="skill.icon"
 			:offset="angle"
-			@hoverEnter="setPause(true)"
-			@hoverLeave="setPause(false)"
+			@hoverEnter="setPause(true, skill.key)"
+			@hoverLeave="setPause(false, skill.key)"
 		/>
 	</div>
 </template>
