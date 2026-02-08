@@ -2,10 +2,15 @@
 import type Project from '@/classes/Project';
 defineProps<{
 	project: Project
+	inSlideShow?: boolean
 }>()
+
 </script>
 <template>
-	<div class="project-container">
+	<div
+		class="project-container"
+		:class="{ 'inSlideshow': inSlideShow }"
+	>
 		<h3>{{ project.title }}</h3>
 		<p>{{ project.description }}</p>
 		<div class="skills">
@@ -26,8 +31,11 @@ defineProps<{
 	background-color: var(--bg);
 	padding: 15px;
 	border-radius: 10px;
-	height: 170px;
 	border: 1px solid var(--border);
+}
+
+.inSlideShow {
+	height: 170px;
 }
 
 .skill {
@@ -37,5 +45,9 @@ defineProps<{
 	border-radius: 5px;
 	margin-right: 5px;
 	font-size: 12px;
+}
+
+h3 {
+	margin: 0;
 }
 </style>

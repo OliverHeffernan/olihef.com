@@ -7,7 +7,7 @@ const emit = defineEmits<{
 	(event: 'skillChange', skillKey: string): void
 }>()
 
-const topSpeed = 0.07
+const topSpeed = 0.02
 var speed = topSpeed
 const acceleration = 0.001
 const angle: Ref<number> = ref<number>(0)

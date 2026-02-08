@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import SplashScreen from '@/sections/SplashScreen.vue'
 import AboutMe from '@/sections/AboutMe.vue'
+import TopProjects from '@/sections/TopProjects.vue'
 </script>
 <template>
 	<SplashScreen />
 	<div class="other-sections">
 		<AboutMe />
+		<TopProjects />
 	</div>
 </template>
 <style scoped>

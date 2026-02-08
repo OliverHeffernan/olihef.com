@@ -35,7 +35,7 @@ watch(skill, (newSkill, oldSkill) => {
 })
 </script>
 <template>
-	<div class="splash-screen">
+	<div class="splash-screen gridBackground">
 		<SkillTip />
 		<SkillContainer
 			v-if="displayedSkill"
@@ -60,12 +60,6 @@ watch(skill, (newSkill, oldSkill) => {
 	width: 100%;
 	height: 100vh;
 	overflow: hidden;
-	background-color: var(--bg);
-	background-position: 0 calc(100vh + 1px);
-	background-image:
-		linear-gradient(to right, var(--border) 1px, transparent 1px),
-		linear-gradient(to bottom, var(--border) 1px, transparent 1px);
-	background-size: 40px 40px;
 }
 .icon-container {
 	position: absolute;

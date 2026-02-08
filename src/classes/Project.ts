@@ -4,4 +4,8 @@ export default interface Project {
 	skills: string[]
 	githubLink?: string
 	steamLink?: string
+	siteLink?: string
+	topProject?: boolean
+	hasCaseStudy?: boolean
+	year: number
 }

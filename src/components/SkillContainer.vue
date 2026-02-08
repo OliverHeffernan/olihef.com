@@ -14,7 +14,15 @@
 		</div>
 		<div class="content">
 			<div class="title">
-				<img :src="`https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${skill.icon}.svg`" />
+				<i
+					v-if="skill.icon === 'rust/rust-original'"
+					class="devicon-rust-original display"
+				></i>
+				<img
+					v-else
+					class="display"
+					:src="`https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${skill.icon}.svg`"
+				/>
 				<h2>{{ skill.name }}</h2>
 			</div>
 			<ProjectSlideShow
@@ -108,6 +116,10 @@ const projects = Info.projects.filter((project) => project.skills.includes(props
 	display: flex;
 	flex-direction: row;
 	gap: 10px;
+}
+
+.skill-container .title i {
+	font-size: 70px;
 }
 
 .skill-container.visible {

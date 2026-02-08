@@ -19,7 +19,15 @@ const emit = defineEmits<{
 				@mouseenter="emit('hoverEnter')"
 				@mouseleave="emit('hoverLeave')"
 			>
-				<img :src="`https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${icon}.svg`" />
+				<i
+					v-if="icon === 'rust/rust-original'"
+					class="devicon-rust-original display"
+				></i>
+				<img
+					v-else
+					class="display"
+					:src="`https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${icon}.svg`"
+				/>
 			</div>
 		</div>
 	</div>
@@ -53,7 +61,7 @@ const emit = defineEmits<{
 	pointer-events: auto;
 }
 
-.icon img {
+.icon .display {
 	width: 50px;
 	height: 50px;
 	padding: 10px;
@@ -64,9 +72,11 @@ const emit = defineEmits<{
 	border: 1px solid var(--border);
 	background-color: var(--bg);
 	transition: background-color 0.3s ease, scale 0.3s ease;
+	font-size: 50px;
 }
 
-.icon:hover img {
+
+.icon:hover .display {
 	background-color: var(--border);
 	scale: 1.1;
 }

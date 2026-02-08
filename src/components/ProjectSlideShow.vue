@@ -42,7 +42,10 @@ function goToSlide(index: number) {
 					`translateY(calc(-${slideOffset}px))` }"
 			>
 				<div v-for="(project, index) in projects" :key="index" class="slide">
-					<ProjectContainer :project="project" />
+					<ProjectContainer
+						:project="project"
+						inSlideShow
+					/>
 				</div>
 			</div>
 		</div>
@@ -74,8 +77,8 @@ function goToSlide(index: number) {
 	width: 15px;
 	height: 15px;
 	border-radius: 50%;
-	background-color: var(--sec-text);
-	border: none;
+	background-color: var(--bg);
+	border: 1px solid var(--border);
 	cursor: pointer;
 	transition: background-color 0.3s ease;
 }
@@ -106,7 +109,7 @@ function goToSlide(index: number) {
 }
 
 .active {
-	background-color: var(--active);
+	background-color: var(--border);
 }
 
 .projects-container {

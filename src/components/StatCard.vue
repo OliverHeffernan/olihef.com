@@ -11,20 +11,22 @@ defineProps<{
 	</div>
 </template>
 <style scoped>
+
 .stat-card {
 	position: relative;
 	padding: 20px;
 	border: 1px solid var(--border);
 	background-color: var(--bg);
 	min-width: 150px;
+	border-radius: var(--border-radius);
 }
 
 .title {
 	position: absolute;
 	margin: 0;
-	padding: 10px;
-	top: -20px;
-	left: 5px;
+	padding: 5px;
+	top: -15px;
+	left: var(--border-radius);
 	background-color: var(--bg);
 	color: var(--sec-text);
 }
