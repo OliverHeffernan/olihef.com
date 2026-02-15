@@ -2,6 +2,11 @@
 import { RouterView } from 'vue-router'
 import { ref, onMounted, watch } from 'vue'
 
+import 'lenis/dist/lenis.css'
+import useLenis from '@/lenis/useLenis'
+
+const lenis = useLenis()
+
 const isDark = ref(false)
 
 onMounted(() => {
