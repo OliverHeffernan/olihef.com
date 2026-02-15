@@ -16,6 +16,7 @@ const emit = defineEmits<{
 		<div class="rotating" :style="{ transform: `rotate(${props.startAngle}deg)` }">
 			<div
 				class="icon"
+				@click="emit('hoverEnter')"
 				@mouseenter="emit('hoverEnter')"
 				@mouseleave="emit('hoverLeave')"
 			>

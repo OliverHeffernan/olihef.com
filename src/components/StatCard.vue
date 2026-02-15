@@ -17,7 +17,6 @@ defineProps<{
 	padding: 20px;
 	border: 1px solid var(--border);
 	background-color: var(--bg);
-	min-width: 150px;
 	border-radius: var(--border-radius);
 }
 

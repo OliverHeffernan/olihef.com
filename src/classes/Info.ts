@@ -33,6 +33,7 @@ export default class Info {
 			description: 'A spread sheet app with vim-like motions.',
 			skills: ['tauri', 'vuejs', 'javascript', 'rust'],
 			githubLink: 'https://github.com/OliverHeffernan/paperWeight',
+			topProject: true,
 			year: 2024
 		},
 		{

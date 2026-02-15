@@ -9,7 +9,10 @@ const topProjects = Info.projects.filter(
 <template>
 	<div class="topProjects">
 		<div class="margins">
-			<h2 class="boxHeader">Top Projects</h2>
+			<h2 class="boxHeader">
+				<i class="fa-solid fa-star"></i>
+				Top Projects
+			</h2>
 			<div class="projects">
 				<ProjectContainer
 					v-for="(project, index) in topProjects"
@@ -39,5 +42,9 @@ const topProjects = Info.projects.filter(
 .projects > * {
 	flex: 1 1 calc(50% - 20px);
 	box-sizing: border-box;
+}
+
+h2 i {
+	color: var(--yellow);
 }
 </style>

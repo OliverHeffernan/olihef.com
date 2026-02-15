@@ -3,11 +3,17 @@ import { ref } from 'vue'
 import type { Ref } from 'vue'
 import Info from '@/classes/Info'
 import RotIcon from './RotIcon.vue'
+
+const props = defineProps<{
+	boost: boolean
+}>()
+
 const emit = defineEmits<{
 	(event: 'skillChange', skillKey: string): void
 }>()
 
 const topSpeed = 0.02
+const boostSpeed = 0.15
 var speed = topSpeed
 const acceleration = 0.001
 const angle: Ref<number> = ref<number>(0)
@@ -25,10 +31,13 @@ const skillsArray = Array.from(Info.skills.values())
 skillsArray.push(...skillsArray)
 
 setInterval(() => {
+	const currentTopSpeed = props.boost ? boostSpeed : topSpeed
 	if (pause && speed > 0) {
 		speed -= acceleration
-	} else if (!pause && speed < topSpeed) {
+	} else if (!pause && speed < currentTopSpeed) {
 		speed += acceleration
+	} else if (speed > currentTopSpeed) {
+		speed -= acceleration
 	}
 	angle.value += speed
 }, 8)

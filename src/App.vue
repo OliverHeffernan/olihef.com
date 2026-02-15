@@ -57,6 +57,7 @@ function toggleTheme() {
 
 :root {
 	--border-radius: 10px;
+	--yellow: #ffcc00;
 
 
 	--border: #ddd;
@@ -108,6 +109,7 @@ html {
 	display: flex;
 	flex-direction: row;
 	gap: 20px;
+	flex-wrap: wrap;
 }
 
 .theme-toggle {

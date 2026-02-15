@@ -11,7 +11,10 @@ defineProps<{
 		class="project-container"
 		:class="{ 'inSlideshow': inSlideShow }"
 	>
-		<h3>{{ project.title }}</h3>
+		<h3>
+			<i v-if="project.topProject" class="fa-solid fa-star"></i>
+			{{ project.title }}
+		</h3>
 		<p>{{ project.description }}</p>
 		<div class="skills">
 			<span
@@ -32,6 +35,7 @@ defineProps<{
 	padding: 15px;
 	border-radius: 10px;
 	border: 1px solid var(--border);
+	min-width: 250px;
 }
 
 .inSlideShow {
@@ -43,11 +47,20 @@ defineProps<{
 	background-color: var(--border);
 	padding: 5px 10px;
 	border-radius: 5px;
-	margin-right: 5px;
 	font-size: 12px;
 }
 
 h3 {
 	margin: 0;
+}
+
+h3 i {
+	color: var(--yellow);
+}
+
+.skills {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 5px;
 }
 </style>
