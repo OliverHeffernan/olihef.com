@@ -12,9 +12,7 @@ import TopProjects from '@/sections/TopProjects.vue'
 </template>
 <style scoped>
 .other-sections {
-	position: absolute;
-	top: 95vh;
-	left: 0;
+	position: relative;
 	width: 100%;
 	z-index: 1000;
 	background-color: var(--bg);

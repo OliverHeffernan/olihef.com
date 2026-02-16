@@ -28,7 +28,7 @@ function goToSlide(index: number) {
 			<button
 				v-for="index in projects.length"
 				:key="index"
-				class="slideBtn"
+				class="slideBtn data-magnetic"
 				:class="{
 					active: index - 1 === slide,
 				}"

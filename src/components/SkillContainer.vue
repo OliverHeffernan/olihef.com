@@ -8,10 +8,12 @@
 		}"
 		v-if="skill"
 	>
+		<!--
 		<div class="button-container">
 			<i v-if="!fullScreen" class="fa-solid fa-expand exButton" @click="fullScreen = true"></i>
 			<i v-if="fullScreen" class="fa-solid fa-compress exButton" @click="fullScreen = false"></i>
 		</div>
+		-->
 		<div class="content">
 			<div class="title">
 				<i

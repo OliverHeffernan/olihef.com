@@ -1,15 +1,20 @@
 <script setup lang="ts">
 import ProjectContainer from '@/components/ProjectContainer.vue'
 import Info from '@/classes/Info'
+import { useScrollReveal, useStaggerReveal } from '@/composables/useScrollAnimations'
+const options = {
+	duration: 0.5,
+	delay: 0.1,
+}
+useScrollReveal('#topProjectsHeader', options)
+useStaggerReveal('.project-container', { ...options, delay: 0.3, stagger: 0.2 })
 
-const topProjects = Info.projects.filter(
-	(project) => project.topProject
-)
+const topProjects = Info.projects.filter((project) => project.topProject)
 </script>
 <template>
 	<div class="topProjects">
 		<div class="margins">
-			<h2 class="boxHeader">
+			<h2 class="boxHeader" id="topProjectsHeader">
 				<i class="fa-solid fa-star"></i>
 				Top Projects
 			</h2>

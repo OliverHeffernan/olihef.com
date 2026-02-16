@@ -64,7 +64,6 @@ function toggleTheme() {
 	--border-radius: 10px;
 	--yellow: #ffcc00;
 
-
 	--border: #ddd;
 	--text: black;
 	--sec-text: rgb(200, 200, 200);
@@ -98,6 +97,10 @@ html {
 		Arial,
 		sans-serif;
 	background-color: var(--bg);
+}
+
+body {
+	overflow-y: hidden;
 }
 .margins {
 	width: min(800px, 90%);
@@ -161,15 +164,5 @@ html {
 	border: 1px solid var(--border);
 	border-radius: var(--border-radius);
 	background-color: var(--bg);
-}
-
-.gridBackground {
-	background-color: var(--bg);
-	/*background-position: 0 calc(100vh + 1px);*/
-	background-position: calc(50vw) calc(100vh + 1px);
-	background-image:
-		linear-gradient(to right, var(--border) 1px, transparent 1px),
-		linear-gradient(to bottom, var(--border) 1px, transparent 1px);
-	background-size: 70px 70px;
 }
 </style>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import type { Ref } from 'vue'
+import gsap from 'gsap'
 import Info from '@/classes/Info'
 import RotIcon from './RotIcon.vue'
 
@@ -12,17 +13,33 @@ const emit = defineEmits<{
 	(event: 'skillChange', skillKey: string): void
 }>()
 
+const angle: Ref<number> = ref<number>(0)
+const speedState = { current: 0, target: 0.02 }
 const topSpeed = 0.02
 const boostSpeed = 0.15
-var speed = topSpeed
-const acceleration = 0.001
-const angle: Ref<number> = ref<number>(0)
 let pause = false
 
 function setPause(value: boolean, skillKey: string) {
 	pause = value
+
+	// Kill any existing speed tweens to prevent conflicts
+	gsap.killTweensOf(speedState)
+
 	if (value) {
 		emit('skillChange', skillKey)
+		// Smoothly decelerate to stop
+		gsap.to(speedState, {
+			current: 0,
+			duration: 1.5,
+			ease: 'power2.out',
+		})
+	} else {
+		// Resume to current target speed
+		gsap.to(speedState, {
+			current: speedState.target,
+			duration: 1,
+			ease: 'power2.inOut',
+		})
 	}
 }
 
@@ -30,17 +47,31 @@ function setPause(value: boolean, skillKey: string) {
 const skillsArray = Array.from(Info.skills.values())
 skillsArray.push(...skillsArray)
 
-setInterval(() => {
-	const currentTopSpeed = props.boost ? boostSpeed : topSpeed
-	if (pause && speed > 0) {
-		speed -= acceleration
-	} else if (!pause && speed < currentTopSpeed) {
-		speed += acceleration
-	} else if (speed > currentTopSpeed) {
-		speed -= acceleration
-	}
-	angle.value += speed
-}, 8)
+// Watch for boost changes
+watch(
+	() => props.boost,
+	(newBoost) => {
+		speedState.target = newBoost ? boostSpeed : topSpeed
+		if (!pause) {
+			// Kill any existing tweens before starting a new one
+			gsap.killTweensOf(speedState)
+			gsap.to(speedState, {
+				current: speedState.target,
+				duration: 1,
+				ease: 'power2.inOut',
+			})
+		}
+	},
+)
+
+// Start the animation loop with GSAP ticker
+onMounted(() => {
+	speedState.current = topSpeed
+
+	gsap.ticker.add(() => {
+		angle.value += speedState.current
+	})
+})
 </script>
 <template>
 	<div class="rotate" :style="{ transform: `rotate(${angle}deg)` }">

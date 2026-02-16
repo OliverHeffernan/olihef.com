@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
+import GridBackground from '@/components/GridBackground.vue'
 import type { Ref } from 'vue'
 import RotIcons from '@/components/RotIcons.vue'
 import SkillTip from '@/components/SkillTip.vue'
@@ -78,7 +79,8 @@ watch(skill, (newSkill, oldSkill) => {
 })
 </script>
 <template>
-	<div class="splash-screen gridBackground">
+	<div class="splash-screen">
+		<GridBackground />
 		<SkillTip />
 		<SkillContainer
 			v-if="displayedSkill"
@@ -91,6 +93,7 @@ watch(skill, (newSkill, oldSkill) => {
 		</div>
 		<button
 			class="boost"
+			data-magnetic
 			@mousedown="startBoost"
 			@mouseup="stopBoost"
 			@mouseleave="stopBoost"
@@ -165,6 +168,7 @@ watch(skill, (newSkill, oldSkill) => {
 	flex-direction: column;
 	align-items: center;
 	justify-content: space-around;
+	pointer-events: none;
 	height: 35vh;
 
 	padding: 40px 0;
@@ -183,7 +187,8 @@ watch(skill, (newSkill, oldSkill) => {
 	color: var(--text);
 	user-select: none;
 	border: none;
-	background: none;
+	background: var(--bg);
+	border-radius: 50%;
 	font-size: 1.5rem;
 	cursor: pointer;
 	width: 80px;

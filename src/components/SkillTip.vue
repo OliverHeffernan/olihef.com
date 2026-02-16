@@ -22,7 +22,7 @@
 	box-sizing: border-box;
 	color: var(--sec-text);
 	background-color: var(--bg);
-	border: 1px dashed rgb(200, 200, 200);
+	border: 1.5px dashed var(--border);
 	border-radius: 20px;
 	padding: 20px;
 

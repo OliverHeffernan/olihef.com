@@ -12,7 +12,7 @@ defineProps<{
 		:class="{ 'inSlideshow': inSlideShow }"
 	>
 		<h3>
-			<i v-if="project.topProject" class="fa-solid fa-star"></i>
+			<!--<i v-if="project.topProject" class="fa-solid fa-star"></i>-->
 			{{ project.title }}
 		</h3>
 		<p>{{ project.description }}</p>
