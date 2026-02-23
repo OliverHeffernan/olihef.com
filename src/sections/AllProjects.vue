@@ -33,4 +33,8 @@ import Info from '@/classes/Info'
 	flex: 1 1 calc(50% - var(--gap));
 	box-sizing: border-box;
 }
+
+.margins {
+	padding-bottom: var(--gap);
+}
 </style>

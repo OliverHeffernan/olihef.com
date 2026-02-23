@@ -8,4 +8,5 @@ export default interface Project {
 	topProject?: boolean
 	hasCaseStudy?: boolean
 	year: number
+	articlePath?: string
 }

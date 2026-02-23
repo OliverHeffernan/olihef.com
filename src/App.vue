@@ -34,7 +34,7 @@ function applyTheme() {
 	} else {
 		root.style.setProperty('--bg', 'white')
 		root.style.setProperty('--text', 'black')
-		root.style.setProperty('--border', '#ddd')
+		root.style.setProperty('--border', '#ccc')
 		root.style.setProperty('--sec-text', 'rgb(200, 200, 200)')
 		root.style.setProperty('--text-hover', 'rgb(150, 150, 150)')
 		root.style.setProperty('--active', 'rgb(100, 100, 100)')
@@ -68,7 +68,7 @@ function toggleTheme() {
 	--yellow: #ffcc00;
 	--accent: #41B883;
 
-	--border: #ddd;
+	--border: #ccc;
 	--text: black;
 	--sec-text: rgb(200, 200, 200);
 	--text-hover: rgb(150, 150, 150);
@@ -184,6 +184,10 @@ hr {
 	border: none;
 	border-top: 1px solid var(--border);
 	margin: var(--gap) 0;
+}
+
+.router-link {
+	color: var(--accent);
 }
 
 </style>

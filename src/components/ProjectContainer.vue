@@ -13,7 +13,7 @@ defineProps<{
 	>
 		<h3>
 			<!--<i v-if="project.topProject" class="fa-solid fa-star"></i>-->
-			<RouterLink :to="`projects/${project.title}`">{{ project.title }}</RouterLink>
+			<RouterLink class="router-link" :to="`projects/${project.title}`">{{ project.title }}</RouterLink>
 		</h3>
 		<p>{{ project.description }}</p>
 		<div class="skills">
