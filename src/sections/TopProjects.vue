@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import ProjectContainer from '@/components/ProjectContainer.vue'
+import { RouterLink } from 'vue-router'
 import Info from '@/classes/Info'
 import { useScrollReveal, useStaggerReveal } from '@/composables/useScrollAnimations'
 const options = {
@@ -16,7 +17,11 @@ const topProjects = Info.projects.filter((project) => project.topProject)
 		<div class="margins">
 			<h2 class="boxHeader" id="topProjectsHeader">
 				<i class="fa-solid fa-star"></i>
-				Top Projects
+				Top Projects -
+				<RouterLink
+					to="/projects"
+					class="seeAll"
+				>see all</RouterLink>
 			</h2>
 			<div class="projects">
 				<ProjectContainer
@@ -31,9 +36,9 @@ const topProjects = Info.projects.filter((project) => project.topProject)
 <style scoped>
 .topProjects {
 	box-sizing: border-box;
-	margin-top: 20px;
-	padding-top: 20px;
-	padding-bottom: 20px;
+	margin-top: var(--gap);
+	padding-top: var(--gap);
+	padding-bottom: var(--gap);
 	border-top: 1px solid var(--border);
 }
 
@@ -41,15 +46,19 @@ const topProjects = Info.projects.filter((project) => project.topProject)
 	display: flex;
 	flex-wrap: wrap;
 	flex-direction: row;
-	gap: 20px;
+	gap: var(--gap);
 }
 
 .projects > * {
-	flex: 1 1 calc(50% - 20px);
+	flex: 1 1 calc(50% - var(--gap));
 	box-sizing: border-box;
 }
 
 h2 i {
 	color: var(--yellow);
+}
+
+.seeAll {
+	color: var(--accent);
 }
 </style>

@@ -254,6 +254,59 @@ export function useParallax(
 	return trigger
 }
 
+export function useHorizontalParallax(
+	target: string | Element | Ref<Element | undefined>,
+	options: ParallaxOptions = {},): ScrollTrigger | null {
+	const {
+		y = 100,
+		speed = 0.5,
+		scrub = 1,
+		start = 'top bottom',
+		end = 'bottom top',
+		markers = false,
+	} = options
+
+	let trigger: ScrollTrigger | null = null
+
+	onMounted(() => {
+		const element = getElement(target)
+		if (!element) {
+			console.warn('useHorizontalParallax: Element not found', target)
+			return
+		}
+
+		const movement = y * speed
+
+		gsap.to(element, {
+			x: movement,
+			ease: 'none',
+			scrollTrigger: {
+				trigger: element,
+				start,
+				end,
+				scrub,
+				markers,
+				onEnter: () => {
+					;(element as HTMLElement).style.willChange = 'transform'
+				},
+				onLeave: () => {
+					;(element as HTMLElement).style.willChange = 'auto'
+				},
+			},
+		})
+
+		trigger = ScrollTrigger.getById(element.id) || ScrollTrigger.getAll().pop() || null
+	})
+
+	onUnmounted(() => {
+		if (trigger) {
+			trigger.kill()
+		}
+	})
+
+	return trigger
+}
+
 /**
  * Batch utility for animating many similar elements efficiently
  * Usage: useBatchReveal('.list-item')

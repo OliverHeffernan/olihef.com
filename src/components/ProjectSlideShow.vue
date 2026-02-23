@@ -62,7 +62,7 @@ function goToSlide(index: number) {
 .slideShow {
 	display: flex;
 	flex-direction: row;
-	gap: 10px;
+	gap: var(--minor-gap);
 	height: 180px;
 }
 
@@ -98,7 +98,7 @@ function goToSlide(index: number) {
 .slides {
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
+	gap: var(--minor-gap);
 	transition: transform 0.5s ease-in-out;
 }
 
@@ -115,6 +115,6 @@ function goToSlide(index: number) {
 .projects-container {
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
+	gap: var(--minor-gap);
 }
 </style>

@@ -17,33 +17,50 @@ const project: Ref<Project> = ref<Project>(
 <template>
 	<div class="projectDetailView margins">
 		<h1 class="boxHeader">{{ project.title }}</h1>
-		<p class="boxP">{{ project.description }}</p>
-		<div class="links">
-			<IconLink
-				v-if="project.githubLink"
-				icon="fa-brands fa-github"
-				:route="project.githubLink"
-				external
-			>GitHub</IconLink>
-			<IconLink
-				v-if="project.steamLink"
-				icon="fa-brands fa-steam"
-				:route="project.steamLink"
-				external
-			>Steam</IconLink>
-			<IconLink
-				v-if="project.siteLink"
-				icon="fa-solid fa-globe"
-				:route="project.siteLink"
-				external
-			>Live Site</IconLink>
+		<div class="flexRow">
+			<p class="boxP">{{ project.description }}</p>
+			<div class="links flexCol">
+				<IconLink
+					v-if="project.githubLink"
+					icon="fa-brands fa-github"
+					:route="project.githubLink"
+					external
+				>GitHub</IconLink>
+				<IconLink
+					v-if="project.steamLink"
+					icon="fa-brands fa-steam"
+					:route="project.steamLink"
+					external
+				>Steam</IconLink>
+				<IconLink
+					v-if="project.siteLink"
+					icon="fa-solid fa-globe"
+					:route="project.siteLink"
+					external
+				>Live Site</IconLink>
+			</div>
 		</div>
+		<hr />
 	</div>
 </template>
 <style scoped>
 .links {
 	display: flex;
-	gap: 10px;
-	margin-top: 10px;
+	gap: var(--minor-gap);
+	margin-top: var(--minor-gap);
+}
+
+.flexRow {
+	display: flex;
+	flex-direction: row;
+	gap: var(--minor-gap);
+}
+
+.flexCol {
+	display: flex;
+	flex-direction: column;
+	gap: var(--minor-gap);
+	padding: 0;
+	margin: 0;
 }
 </style>

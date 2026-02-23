@@ -65,8 +65,8 @@ const emit = defineEmits<{
 .icon .display {
 	width: 50px;
 	height: 50px;
-	padding: 10px;
-	border-radius: 10px;
+	padding: var(--minor-gap);
+	border-radius: var(--border-radius);
 	display: block;
 	pointer-events: none;
 

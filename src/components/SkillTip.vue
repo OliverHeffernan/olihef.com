@@ -14,7 +14,7 @@
 	top: -100%;
 }
 100% {
-	top: 10px;
+	top: var(--minor-gap);
 }
 }
 .tip {
@@ -23,10 +23,10 @@
 	color: var(--sec-text);
 	background-color: var(--bg);
 	border: 1.5px dashed var(--border);
-	border-radius: 20px;
-	padding: 20px;
+	border-radius: var(--major-border-radius);
+	padding: var(--gap);
 
-	width: min(calc(100% - 20px), 500px);
+	width: min(calc(100% - var(--minor-gap) * 2), 500px);
 	height: 290px;
 
 	left: 50%;

@@ -67,7 +67,7 @@ Transform the portfolio from a clean, functional site into an award-worthy exper
 **Goal**: Re-enable and polish parallax effects with multiple layers
 
 **Implementation**:
-- [ ] Re-enable GridBackground parallax (now that jolt is fixed)
+- [x] Re-enable GridBackground parallax (now that jolt is fixed)
 - [ ] Add parallax to project images (slower scroll speed)
 - [ ] Create multi-layer parallax in hero section
 - [ ] Add horizontal parallax to certain elements

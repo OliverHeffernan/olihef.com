@@ -28,7 +28,7 @@ defineProps<{
 	display: flex;
 	text-decoration: none;
 	color: var(--text-color);
-	padding: 10px;
+	padding: var(--border-radius);
 	border: 1px solid var(--border);
 	border-radius: var(--border-radius);
 
@@ -43,10 +43,11 @@ defineProps<{
 .iconLink .label {
 	margin-left: 8px;
 	margin-top: 2px;
+	white-space: nowrap;
 }
 
 .exIcon {
-	margin-left: 10px;
+	margin-left: var(--border-radius);
 	color: var(--border);
 	transition: color 0.2s ease;
 }

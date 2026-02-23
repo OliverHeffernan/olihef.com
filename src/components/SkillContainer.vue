@@ -1,8 +1,8 @@
 <template>
 	<div
+		ref="containerRef"
 		class="skill-container"
 		:class="{
-			visible: visible,
 			fullScreen: fullScreen,
 			small: !fullScreen,
 		}"
@@ -27,15 +27,13 @@
 				/>
 				<h2>{{ skill.name }}</h2>
 			</div>
-			<ProjectSlideShow
-				:projects="projects"
-				:fullScreen="fullScreen"
-			/>
+			<ProjectSlideShow :projects="projects" :fullScreen="fullScreen" />
 		</div>
 	</div>
 </template>
 <script setup lang="ts">
-import { ref, watch, type Ref } from 'vue'
+import { ref, watch, onMounted, type Ref } from 'vue'
+import gsap from 'gsap'
 import Info from '@/classes/Info'
 import ProjectSlideShow from './ProjectSlideShow.vue'
 
@@ -45,6 +43,7 @@ const props = defineProps<{
 }>()
 
 const fullScreen: Ref<boolean> = ref(false)
+const containerRef: Ref<HTMLElement | null> = ref(null)
 
 // Disable body scroll when fullscreen
 watch(fullScreen, (isFullScreen) => {
@@ -54,6 +53,28 @@ watch(fullScreen, (isFullScreen) => {
 		document.body.style.overflow = ''
 	}
 })
+
+// Animate visibility with GSAP
+watch(
+	() => props.visible,
+	(isVisible) => {
+		if (!containerRef.value) return
+
+		if (isVisible) {
+			gsap.to(containerRef.value, {
+				top: 'var(--border-radius)',
+				duration: 0.5,
+				ease: 'power2.out',
+			})
+		} else {
+			gsap.to(containerRef.value, {
+				top: '-100%',
+				duration: 0.4,
+				ease: 'power2.in',
+			})
+		}
+	},
+)
 
 const skill = Info.skills.get(props.skillKey)
 const projects = Info.projects.filter((project) => project.skills.includes(props.skillKey))
@@ -67,14 +88,7 @@ const projects = Info.projects.filter((project) => project.skills.includes(props
 	top: -100%;
 	background-color: var(--bg);
 	border: 1px solid var(--border);
-	transition:
-		top 0.3s ease-out,
-		width 0.3s ease-out,
-		height 0.3s ease-out,
-		left 0.3s ease-out,
-		transform 0.3s ease-out,
-		border-radius 0.3s ease-out;
-	border-radius: 20px;
+	border-radius: var(--major-border-radius);
 	overflow: hidden;
 }
 
@@ -83,20 +97,20 @@ const projects = Info.projects.filter((project) => project.skills.includes(props
 	top: 0;
 	right: 0;
 	z-index: 10;
-	padding: 20px;
+	padding: var(--gap);
 }
 
 .content {
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
-	padding: 20px;
+	gap: var(--minor-gap);
+	padding: var(--gap);
 	height: 100%;
 	overflow: hidden;
 }
 
 .small {
-	width: min(calc(100% - 20px), 500px);
+	width: min(calc(100% - var(--minor-gap) * 2), 500px);
 	left: 50%;
 	transform: translateX(-50%);
 	height: 290px;
@@ -117,15 +131,11 @@ const projects = Info.projects.filter((project) => project.skills.includes(props
 .skill-container .title {
 	display: flex;
 	flex-direction: row;
-	gap: 10px;
+	gap: var(--minor-gap);
 }
 
 .skill-container .title i {
 	font-size: 70px;
-}
-
-.skill-container.visible {
-	top: 10px;
 }
 
 .skill-container img {

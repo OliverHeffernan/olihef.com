@@ -58,11 +58,15 @@ function toggleTheme() {
 </template>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Turret+Road:wght@200;300;400;500;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap');
 
 :root {
+	--gap: 20px;
+	--minor-gap: 10px;
 	--border-radius: 10px;
+	--major-border-radius: 20px;
 	--yellow: #ffcc00;
+	--accent: #41B883;
 
 	--border: #ddd;
 	--text: black;
@@ -70,6 +74,8 @@ function toggleTheme() {
 	--text-hover: rgb(150, 150, 150);
 	--active: rgb(100, 100, 100);
 	--bg: white;
+
+	--mono-font: 'Fira Code', monospace;
 
 	/*
 	--bg: rgb(20, 20, 20);
@@ -122,8 +128,8 @@ body {
 
 .theme-toggle {
 	position: fixed;
-	top: 10px;
-	right: 10px;
+	top: var(--minor-gap);
+	right: var(--minor-gap);
 	width: 50px;
 	height: 50px;
 	border-radius: 50%;
@@ -151,7 +157,7 @@ body {
 
 .boxHeader {
 	box-sizing: border-box;
-	padding: 10px;
+	padding: var(--minor-gap);
 	border: 1px solid var(--border);
 	background-color: var(--bg);
 	border-radius: var(--border-radius);
@@ -159,10 +165,25 @@ body {
 
 .boxP {
 	box-sizing: border-box;
-	padding: 20px;
+	padding: var(--gap);
 	margin: 0;
 	border: 1px solid var(--border);
 	border-radius: var(--border-radius);
 	background-color: var(--bg);
 }
+
+.box {
+	box-sizing: border-box;
+	padding: var(--gap);
+	margin: 0;
+	border: 1px solid var(--border);
+	border-radius: var(--border-radius);
+}
+
+hr {
+	border: none;
+	border-top: 1px solid var(--border);
+	margin: var(--gap) 0;
+}
+
 </style>

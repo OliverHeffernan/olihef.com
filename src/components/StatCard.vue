@@ -14,7 +14,7 @@ defineProps<{
 
 .stat-card {
 	position: relative;
-	padding: 20px;
+	padding: var(--gap);
 	border: 1px solid var(--border);
 	background-color: var(--bg);
 	border-radius: var(--border-radius);

@@ -28,7 +28,7 @@ class UseLenis {
 			syncTouch: true,
 			smoothWheel: true,
 			wheelMultiplier: 1,
-			touchMultiplier: 2,
+			touchMultiplier: 1,
 			prevent: (node) => node.classList.contains('no-lenis'),
 		})
 

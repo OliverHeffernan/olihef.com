@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import StatCard from '@/components/StatCard.vue'
+import ImageBox from '@/components/ImageBox.vue'
 import { useScrollReveal, type ScrollRevealOptions } from '@/composables/useScrollAnimations'
 
 const options: ScrollRevealOptions = {
@@ -9,6 +10,7 @@ const options: ScrollRevealOptions = {
 useScrollReveal('#aboutHeader', options)
 useScrollReveal('.boxP', { ...options, delay: 0.3 })
 useScrollReveal('.stats', { ...options, delay: 0.5 })
+useScrollReveal('.images', { ...options, delay: 0.7 })
 
 </script>
 <template>
@@ -23,23 +25,25 @@ useScrollReveal('.stats', { ...options, delay: 0.5 })
 					front-end/back-end internship to apply problem-solving skills and passion for
 					user-focused solutions.
 				</p>
-				<div class="flex-column stats">
-					<StatCard
-						title="Coding For"
-						:value="`${new Date().getFullYear() - 2017} years`"
+				<div class="images">
+					<ImageBox
+						imageName="profile_picture.jpeg"
+						alt="Profile Picture"
+						width="200"
+						height="200"
+						profile
 					/>
-					<StatCard title="GitHub Commits" value="950+" />
 				</div>
 			</div>
 		</div>
 	</div>
 </template>
-<style scoped>
+<style>
 .scroll {
 	width: 100%;
 	text-align: center;
 	font-size: 2rem;
-	margin-top: 20px;
+	margin-top: var(--gap);
 }
 
 .flex-row p {
@@ -48,7 +52,7 @@ useScrollReveal('.stats', { ...options, delay: 0.5 })
 
 @media (max-width: 600px) {
 	.flex-row {
-		flex-direction: column;
+		flex-direction: column-reverse;
 	}
 }
 
@@ -58,9 +62,9 @@ useScrollReveal('.stats', { ...options, delay: 0.5 })
 
 .about-me {
 	box-sizing: border-box;
-	margin-top: 20px;
+	margin-top: var(--gap);
 	border-top: 1px solid var(--border);
 	border-bottom: 1px solid var(--border);
-	padding-bottom: 20px;
+	padding-bottom: var(--gap);
 }
 </style>
