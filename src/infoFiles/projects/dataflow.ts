@@ -7,4 +7,5 @@ export default {
 	githubLink: 'https://github.com/OliverHeffernan/paperWeight',
 	topProject: true,
 	year: 2024,
+	articlePath: 'dataflow.md',
 } satisfies Project

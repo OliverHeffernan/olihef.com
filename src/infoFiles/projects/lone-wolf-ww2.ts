@@ -8,4 +8,5 @@ export default {
 	steamLink: 'https://store.steampowered.com/app/1399180/Lone_Wolf_World_War_2/',
 	topProject: true,
 	year: 2020,
+	articlePath: 'lone-wolf-ww2.md',
 } satisfies Project

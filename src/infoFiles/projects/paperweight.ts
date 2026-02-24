@@ -9,4 +9,5 @@ export default {
 	siteLink: 'https://paperweight.olihef.com',
 	topProject: true,
 	year: 2025,
+	articlePath: 'paperweight.md'
 } satisfies Project
