@@ -2,8 +2,15 @@
 import ProjectContainer from '@/components/ProjectContainer.vue'
 import TitleSplash from '@/components/TitleSplash.vue'
 import Info from '@/classes/Info'
+import BackButton from '@/components/BackButton.vue';
 </script>
 <template>
+	<div id="backContainer">
+		<BackButton
+			label="home"
+			route="/"
+		/>
+	</div>
 	<TitleSplash
 		profile
 		title="Projects"
@@ -36,5 +43,12 @@ import Info from '@/classes/Info'
 
 .margins {
 	padding-bottom: var(--gap);
+}
+
+#backContainer {
+	position: absolute;
+	top: var(--gap);
+	left: var(--gap);
+	z-index: 10000;
 }
 </style>

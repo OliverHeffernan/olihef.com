@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import IconLink from '@/components/IconLink.vue'
 import ArticleContent from '@/components/ArticleContent.vue'
+import BackButton from '@/components/BackButton.vue'
 
 import { ref, type Ref } from 'vue'
 import type Project from '@/classes/Project'
@@ -19,6 +20,10 @@ const project: Ref<Project> = ref<Project>(
 	<div class="projectDetailView">
 		<div class="margins">
 			<div class="project-header">
+				<BackButton
+					label="all projects"
+					route="/projects"
+				/>
 				<div class="header-content">
 					<h1 class="project-title">{{ project.title }}</h1>
 					<p class="project-year">{{ project.year }}</p>
@@ -81,6 +86,7 @@ const project: Ref<Project> = ref<Project>(
 	align-items: baseline;
 	gap: var(--gap);
 	margin-bottom: var(--gap);
+	margin-top: var(--gap);
 	flex-wrap: wrap;
 }
 

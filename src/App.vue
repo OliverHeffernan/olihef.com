@@ -128,8 +128,8 @@ body {
 
 .theme-toggle {
 	position: fixed;
-	top: var(--minor-gap);
-	right: var(--minor-gap);
+	top: var(--gap);
+	right: var(--gap);
 	width: 50px;
 	height: 50px;
 	border-radius: 50%;
