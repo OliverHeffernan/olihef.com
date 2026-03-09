@@ -63,6 +63,7 @@ function toggleTheme() {
 :root {
 	--gap: 20px;
 	--major-gap: 60px;
+	--massive-gap: 320px;
 	--minor-gap: 10px;
 	--border-radius: 10px;
 	--major-border-radius: 20px;
