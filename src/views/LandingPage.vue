@@ -3,16 +3,14 @@ import SplashScreen from '@/sections/SplashScreen.vue'
 import AboutMe from '@/sections/AboutMe.vue'
 import TopProjects from '@/sections/TopProjects.vue'
 import WorkExperience from '@/sections/WorkExperience.vue'
-import FormalEducation from '@/sections/FormalEducation.vue'
 import FooterSection from '@/components/FooterSection.vue'
 </script>
 <template>
 	<SplashScreen />
 	<div class="other-sections">
 		<AboutMe />
-		<TopProjects />
 		<WorkExperience />
-		<FormalEducation />
+		<TopProjects />
 		<FooterSection />
 	</div>
 </template>

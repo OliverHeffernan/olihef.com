@@ -36,7 +36,6 @@ const topProjects = Info.projects.filter((project) => project.topProject)
 <style scoped>
 .topProjects {
 	box-sizing: border-box;
-	margin-top: var(--gap);
 	padding-top: var(--gap);
 	padding-bottom: var(--gap);
 	border-top: 1px solid var(--border);
