@@ -14,7 +14,7 @@ export interface HorizontalScrollJackOptions {
 /**
  * Creates a horizontal scroll-jacking effect where vertical scroll translates to horizontal movement
  * The container pins in the viewport while the scroller moves horizontally
- * 
+ *
  * @param containerRef - Ref to the container element that will be pinned
  * @param scrollerRef - Ref to the element that will scroll horizontally
  * @param options - Configuration options
@@ -23,14 +23,9 @@ export interface HorizontalScrollJackOptions {
 export function useHorizontalScrollJack(
 	containerRef: Ref<HTMLElement | null>,
 	scrollerRef: Ref<HTMLElement | null>,
-	options: HorizontalScrollJackOptions = {}
+	options: HorizontalScrollJackOptions = {},
 ): ScrollTrigger | null {
-	const {
-		scrub = 1,
-		markers = false,
-		scrollMultiplier = 1.5,
-		pinSpacing = true
-	} = options
+	const { scrub = 1, markers = false, scrollMultiplier = 1.5, pinSpacing = true } = options
 
 	let trigger: ScrollTrigger | null = null
 
@@ -50,23 +45,27 @@ export function useHorizontalScrollJack(
 			const containerWidth = container.clientWidth
 			const horizontalDistance = scrollWidth - containerWidth
 
-			console.log('Horizontal scroll setup:', {
-				scrollWidth,
-				containerWidth,
-				horizontalDistance
-			})
-
 			// If there's no horizontal scroll needed, don't create the effect
 			if (horizontalDistance <= 0) {
-				console.warn('useHorizontalScrollJack: No horizontal scroll needed (content fits in container)')
+				console.warn(
+					'useHorizontalScrollJack: No horizontal scroll needed (content fits in container)',
+				)
 				return
 			}
 
 			// Calculate vertical scroll distance dynamically based on horizontal distance
-			// This ensures the scroll completes regardless of gap size
+			// This ensures the scroll completes regardless of gap size or number of items
 			const baseScrollDuration = window.innerHeight * scrollMultiplier
-			// Add extra scroll distance proportional to content width (ensures full scroll)
-			const scrollDuration = baseScrollDuration + (horizontalDistance * 0.3)
+			// Increased multiplier to ensure all cards are fully scrollable
+			const scrollDuration = baseScrollDuration + horizontalDistance * 0.5
+
+			console.log('📊 Horizontal scroll setup:', {
+				scrollWidth,
+				containerWidth,
+				horizontalDistance,
+				scrollDuration,
+				itemsVisibleAtStart: Math.floor(containerWidth / 700), // Approx based on 700px min-width
+			})
 
 			// Optimize performance - use 3D transform for hardware acceleration (Safari)
 			scroller.style.willChange = 'transform'
@@ -91,12 +90,12 @@ export function useHorizontalScrollJack(
 					},
 					onEnterBack: () => {
 						scroller.style.willChange = 'transform'
-					}
-				}
+					},
+				},
 			})
 
 			trigger = animation.scrollTrigger || null
-			
+
 			// Force ScrollTrigger refresh after creation (Safari fix)
 			setTimeout(() => {
 				ScrollTrigger.refresh()

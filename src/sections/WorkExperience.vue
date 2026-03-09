@@ -32,11 +32,29 @@ useHorizontalScrollJack(containerRef, scrollerRef, {
 					marking assignments.
 				</WorkContainer>
 				<WorkContainer
-					role="Crew Member"
-					place="McDonald's Silverstream"
-					start="Dec 2023"
-					end="Mar 2026"
-				/>
+					role="Bachelor of Engineering with Honours, majoring in Software Engineering"
+					place="Victoria University of Wellington"
+					start="2025"
+					end="Present"
+				>
+					<ul>
+						<li>A+ average</li>
+						<li>Victoria University of Wellington School-Leaver Tangiwai Excellence Scholarship 2025</li>
+						<li>Dean's List for Faculty of Science and Engineering 2025 (Top students in the faculty)</li>
+					</ul>
+				</WorkContainer>
+				<WorkContainer
+					role="NCEA levels 1-3 with Excellence
+					Endorsed"
+					place="St Patrick's College Silverstream"
+					start="2020"
+					end="2024"
+				>
+					<ul>
+						<li>2024 Dux of the school</li>
+						<li>2023 Year 12 Gold Scholar (number 1 academic in year group)</li>
+					</ul>
+				</WorkContainer>
 			</div>
 		</div>
 	</div>
@@ -66,6 +84,7 @@ useHorizontalScrollJack(containerRef, scrollerRef, {
 .horizontal-scroller {
 	display: flex;
 	flex-direction: row;
+	align-items: stretch; /* Make all children same height */
 	gap: var(--massive-gap);
 	/* Calculate left padding to align with .margins class */
 	/* .margins is min(800px, 90%), centered with margin: 0 auto */
@@ -73,6 +92,7 @@ useHorizontalScrollJack(containerRef, scrollerRef, {
 	padding-left: max(calc((100vw - 800px) / 2), 5vw);
 	padding-right: 5vw;
 	will-change: transform;
+	height: 100%; /* Take full height of container */
 	/* Safari hardware acceleration */
 	-webkit-transform: translate3d(0, 0, 0);
 	transform: translate3d(0, 0, 0);
