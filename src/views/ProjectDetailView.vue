@@ -2,6 +2,7 @@
 import IconLink from '@/components/IconLink.vue'
 import ArticleContent from '@/components/ArticleContent.vue'
 import BackButton from '@/components/BackButton.vue'
+import FooterSection from '@/components/FooterSection.vue'
 
 import { ref, type Ref } from 'vue'
 import type Project from '@/classes/Project'
@@ -67,6 +68,7 @@ const project: Ref<Project> = ref<Project>(
 		</div>
 
 		<ArticleContent v-if="project.articlePath" :articlePath="project.articlePath" />
+		<FooterSection />
 	</div>
 </template>
 <style scoped>

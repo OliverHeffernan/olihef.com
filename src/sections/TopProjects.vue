@@ -40,6 +40,7 @@ const topProjects = Info.projects.filter((project) => project.topProject)
 	padding-top: var(--gap);
 	padding-bottom: var(--gap);
 	border-top: 1px solid var(--border);
+	border-bottom: 1px solid var(--border);
 }
 
 .projects {
@@ -60,5 +61,9 @@ h2 i {
 
 .seeAll {
 	color: var(--accent);
+}
+
+.margins {
+	padding: var(--major-gap) 0;
 }
 </style>

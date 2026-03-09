@@ -33,6 +33,7 @@ defineProps<{
 	border-radius: var(--border-radius);
 
 	transition: background-color 0.2s ease;
+	background-color: var(--bg);
 }
 
 .iconLink .icon {

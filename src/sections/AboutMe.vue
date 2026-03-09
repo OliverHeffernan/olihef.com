@@ -65,6 +65,6 @@ useScrollReveal('.images', { ...options, delay: 0.7 })
 	margin-top: var(--gap);
 	border-top: 1px solid var(--border);
 	border-bottom: 1px solid var(--border);
-	padding-bottom: var(--gap);
+	padding: var(--major-gap) 0;
 }
 </style>

@@ -62,6 +62,7 @@ function toggleTheme() {
 
 :root {
 	--gap: 20px;
+	--major-gap: 60px;
 	--minor-gap: 10px;
 	--border-radius: 10px;
 	--major-border-radius: 20px;
@@ -161,6 +162,7 @@ body {
 	border: 1px solid var(--border);
 	background-color: var(--bg);
 	border-radius: var(--border-radius);
+	margin-top: 0;
 }
 
 .boxP {

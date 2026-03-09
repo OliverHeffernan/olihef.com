@@ -3,6 +3,7 @@ import ProjectContainer from '@/components/ProjectContainer.vue'
 import TitleSplash from '@/components/TitleSplash.vue'
 import Info from '@/classes/Info'
 import BackButton from '@/components/BackButton.vue';
+import FooterSection from '@/components/FooterSection.vue'
 </script>
 <template>
 	<div id="backContainer">
@@ -27,6 +28,7 @@ import BackButton from '@/components/BackButton.vue';
 			</div>
 		</div>
 	</div>
+	<FooterSection />
 </template>
 <style scoped>
 .projects {
@@ -34,6 +36,10 @@ import BackButton from '@/components/BackButton.vue';
 	flex-wrap: wrap;
 	flex-direction: row;
 	gap: var(--gap);
+}
+
+.allProjects {
+	padding: var(--major-gap) 0;
 }
 
 .projects > * {
