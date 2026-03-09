@@ -19,16 +19,18 @@ class UseLenis {
 		ScrollTrigger.config({
 			autoRefreshEvents: 'visibilitychange,DOMContentLoaded,load',
 			ignoreMobileResize: true,
+			limitCallbacks: true, // Prevent excessive callbacks during scroll
 		})
 
 		this.lenis = new Lenis({
 			autoRaf: true,
-			duration: 1.1,
+			duration: 1.2, // Slightly longer duration for smoother transitions
 			infinite: false,
 			syncTouch: true,
 			smoothWheel: true,
 			wheelMultiplier: 1,
 			touchMultiplier: 1,
+			easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Custom easing for smoother Safari scrolling
 			prevent: (node) => node.classList.contains('no-lenis'),
 		})
 
@@ -42,7 +44,6 @@ class UseLenis {
 			this.lenis?.resize()
 			ScrollTrigger.refresh()
 		})
-
 	}
 }
 

@@ -79,17 +79,24 @@ export function useHorizontalScrollJack(
 					trigger: container,
 					pin: true,
 					pinSpacing: pinSpacing,
-					start: 'center center',
+					start: 'top top', // Start pinning when container hits top of viewport
 					end: `+=${scrollDuration}`,
-					scrub: scrub,
+					scrub: scrub, // Use scrub value from options
 					markers: markers,
 					anticipatePin: 1,
 					invalidateOnRefresh: true, // Recalculate on refresh (important for Safari)
+					fastScrollEnd: true, // Prevent snap back on fast scrolling (Safari)
+					onEnter: () => {
+						scroller.style.willChange = 'transform'
+					},
 					onLeave: () => {
 						scroller.style.willChange = 'auto'
 					},
 					onEnterBack: () => {
 						scroller.style.willChange = 'transform'
+					},
+					onLeaveBack: () => {
+						scroller.style.willChange = 'auto'
 					},
 				},
 			})

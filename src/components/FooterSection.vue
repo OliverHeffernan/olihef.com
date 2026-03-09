@@ -1,21 +1,29 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import IconLink from './IconLink.vue';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ref } from 'vue'
+import IconLink from './IconLink.vue'
+import gsap from 'gsap'
+import { useAnimatedGrid } from '@/composables/useAnimatedGrid'
 
-gsap.registerPlugin(ScrollTrigger);
+const footerRef = ref<HTMLElement | null>(null)
+const gridRef = ref<HTMLElement | null>(null)
+const emailButtonRef = ref<HTMLElement | null>(null)
+const copiedTextRef = ref<HTMLElement | null>(null)
 
-const footerRef = ref<HTMLElement | null>(null);
-const gridRef = ref<HTMLElement | null>(null);
-const emailButtonRef = ref<HTMLElement | null>(null);
-const copiedTextRef = ref<HTMLElement | null>(null);
+// Initialize animated grid with hover effects
+useAnimatedGrid(footerRef, gridRef, {
+	enableHover: true,
+	targetOpacity: 0.3,
+	hoverOpacity: 0.6,
+	scrollStart: 'top 80%',
+	scrollEnd: 'top 20%',
+	scrubValue: 1,
+})
 
 const copyToClipboard = async () => {
-	const email = 'oliverheffernan@icloud.com';
+	const email = 'oliverheffernan@icloud.com'
 
 	try {
-		await navigator.clipboard.writeText(email);
+		await navigator.clipboard.writeText(email)
 
 		// Animate button on successful copy
 		if (emailButtonRef.value && copiedTextRef.value) {
@@ -28,10 +36,10 @@ const copyToClipboard = async () => {
 					gsap.to(emailButtonRef.value, {
 						scale: 1,
 						duration: 0.3,
-						ease: 'elastic.out(1, 0.5)'
-					});
-				}
-			});
+						ease: 'elastic.out(1, 0.5)',
+					})
+				},
+			})
 
 			// Show "Copied!" text with fade in/out
 			gsap.timeline()
@@ -39,84 +47,21 @@ const copyToClipboard = async () => {
 					opacity: 1,
 					y: -10,
 					duration: 0.3,
-					ease: 'power2.out'
+					ease: 'power2.out',
 				})
 				.to(copiedTextRef.value, {
 					opacity: 0,
 					y: -20,
 					duration: 0.3,
 					delay: 1.5,
-					ease: 'power2.in'
+					ease: 'power2.in',
 				})
-				.set(copiedTextRef.value, { y: 0 });
+				.set(copiedTextRef.value, { y: 0 })
 		}
 	} catch (err) {
-		console.error('Failed to copy email:', err);
+		console.error('Failed to copy email:', err)
 	}
-};
-
-onMounted(() => {
-	if (footerRef.value && gridRef.value) {
-		const grid = gridRef.value;
-		const footer = footerRef.value;
-		let hoverTween: gsap.core.Tween | null = null;
-
-		// Set initial border color
-		const borderColor = getComputedStyle(document.documentElement).getPropertyValue('--border').trim();
-		const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
-
-		// Animate grid color from border to accent on scroll using GSAP
-		// Use separate animations for opacity and color to avoid conflicts
-		gsap.to(grid, {
-			'--grid-color': accentColor,
-			scrollTrigger: {
-				trigger: footer,
-				start: 'top 80%',
-				end: 'top 20%',
-				scrub: 1,
-			}
-		});
-
-		// Fade in animation (separate from color change)
-		gsap.fromTo(grid, 
-			{ opacity: 0, y: 30 },
-			{
-				opacity: 0.3,
-				y: 0,
-				duration: 1,
-				ease: 'power2.out',
-				scrollTrigger: {
-					trigger: footer,
-					start: 'top 80%',
-					toggleActions: 'play none none none'
-				}
-			}
-		);
-
-		// Animate grid on hover - kill any existing tweens first
-		footer.addEventListener('mouseenter', () => {
-			if (hoverTween) hoverTween.kill();
-			hoverTween = gsap.to(grid, {
-				opacity: 0.6,
-				scale: 1.02,
-				duration: 0.6,
-				ease: 'power2.out',
-				overwrite: 'auto'
-			});
-		});
-
-		footer.addEventListener('mouseleave', () => {
-			if (hoverTween) hoverTween.kill();
-			hoverTween = gsap.to(grid, {
-				opacity: 0.3,
-				scale: 1,
-				duration: 0.6,
-				ease: 'power2.out',
-				overwrite: 'auto'
-			});
-		});
-	}
-});
+}
 </script>
 
 <template>
@@ -126,15 +71,11 @@ onMounted(() => {
 			<div class="main-content">
 				<h2 class="tagline">Open to Opportunities</h2>
 				<p class="description">
-					I'm currently seeking software engineering roles and exciting projects.
-					Let's build something great together.
+					I'm currently seeking software engineering roles and exciting projects. Let's
+					build something great together.
 				</p>
 				<div class="email-container">
-					<button
-						ref="emailButtonRef"
-						@click="copyToClipboard"
-						class="email-button"
-					>
+					<button ref="emailButtonRef" @click="copyToClipboard" class="email-button">
 						<i class="fa-solid fa-envelope"></i>
 						<span>oliverheffernan@icloud.com</span>
 						<i class="fa-solid fa-copy copy-icon"></i>
@@ -160,9 +101,7 @@ onMounted(() => {
 				</IconLink>
 			</div>
 
-			<div class="copyright">
-				© {{ new Date().getFullYear() }} Oliver Heffernan
-			</div>
+			<div class="copyright">© {{ new Date().getFullYear() }} Oliver Heffernan</div>
 		</div>
 	</footer>
 </template>
