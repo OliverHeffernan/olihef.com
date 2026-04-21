@@ -155,6 +155,37 @@ onMounted(async () => {
 	margin: 2rem 0;
 }
 
+.article-content :deep(img) {
+	max-width: 100%;
+	height: auto;
+	display: block;
+	margin: 1rem 0 0.75rem;
+	border-radius: 10px;
+	border: 1px solid var(--border);
+}
+
+.article-content :deep(table) {
+	width: 100%;
+	border-collapse: collapse;
+}
+.article-content :deep(td:first-child) {
+	white-space: nowrap;
+}
+
+.article-content :deep(td) {
+	border: 1px solid var(--border);
+	padding: 0.75rem;
+	text-align: left;
+}
+
+.article-content :deep(th) {
+	border: 1px solid var(--border);
+	padding: 0.75rem;
+	text-align: left;
+	background-color: var(--border);
+	font-weight: 600;
+}
+
 @media (max-width: 768px) {
 	.article-content :deep(h1) {
 		font-size: 2rem;
