@@ -1,6 +1,7 @@
 import { onMounted, type Ref } from 'vue'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { isIOSBrowser, isSafariBrowser } from '@/utils/platform'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -70,8 +71,11 @@ export function useAnimatedGrid(
 		})
 
 		// Make grid stationary if requested (using background-attachment)
-		if (stationary) {
+		const shouldUseStationaryBackground = stationary && !isSafariBrowser() && !isIOSBrowser()
+		if (shouldUseStationaryBackground) {
 			grid.style.backgroundAttachment = 'fixed'
+		} else {
+			grid.style.backgroundAttachment = 'scroll'
 		}
 
 		// Animate grid color from border to accent on scroll

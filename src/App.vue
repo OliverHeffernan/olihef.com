@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import { ref, onMounted, watch } from 'vue'
+import { LENIS_ENABLED } from '@/config/features'
 
 import 'lenis/dist/lenis.css'
 import useLenis from '@/lenis/useLenis'
@@ -10,6 +11,12 @@ const lenis = useLenis()
 const isDark = ref(false)
 
 onMounted(() => {
+	if (LENIS_ENABLED) {
+		document.body.classList.add('lenis-enabled')
+	} else {
+		document.body.classList.remove('lenis-enabled')
+	}
+
 	const savedTheme = localStorage.getItem('theme')
 	if (savedTheme) {
 		isDark.value = savedTheme === 'dark'
@@ -108,6 +115,10 @@ html {
 }
 
 body {
+	overflow-y: auto;
+}
+
+body.lenis-enabled {
 	overflow-y: hidden;
 }
 .margins {

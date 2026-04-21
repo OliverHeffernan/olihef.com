@@ -1,6 +1,7 @@
 import Lenis from 'lenis'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { LENIS_ENABLED } from '@/config/features'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -15,6 +16,10 @@ class UseLenis {
 
 		UseLenis.instance = this
 
+		if (!LENIS_ENABLED) {
+			return
+		}
+
 		// Configure ScrollTrigger BEFORE creating Lenis
 		ScrollTrigger.config({
 			autoRefreshEvents: 'visibilitychange,DOMContentLoaded,load',
@@ -23,7 +28,7 @@ class UseLenis {
 		})
 
 		this.lenis = new Lenis({
-			autoRaf: true,
+			autoRaf: false,
 			duration: 1.2, // Slightly longer duration for smoother transitions
 			infinite: false,
 			syncTouch: true,
@@ -35,14 +40,28 @@ class UseLenis {
 		})
 
 		// Connect Lenis scroll to GSAP ScrollTrigger
-		this.lenis.on('scroll', (e) => {
+		this.lenis.on('scroll', () => {
 			ScrollTrigger.update()
 		})
+
+		const updateGsapTicker = (time: number) => {
+			this.lenis?.raf(time * 1000)
+		}
+
+		gsap.ticker.add(updateGsapTicker)
+		gsap.ticker.lagSmoothing(0)
 
 		// Prevent auto-refresh during scroll to avoid jolts
 		window.addEventListener('resize', () => {
 			this.lenis?.resize()
 			ScrollTrigger.refresh()
+		})
+
+		requestAnimationFrame(() => {
+			requestAnimationFrame(() => {
+				this.lenis?.resize()
+				ScrollTrigger.refresh()
+			})
 		})
 	}
 }

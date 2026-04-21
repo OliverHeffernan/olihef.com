@@ -1,6 +1,7 @@
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { onMounted, onUnmounted, type Ref } from 'vue'
+import { isIOSBrowser, isSafariBrowser } from '@/utils/platform'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -40,6 +41,8 @@ export function useHorizontalScrollJack(
 
 		// Safari needs multiple animation frames + setTimeout for reliable layout calculations
 		const initScrollTrigger = () => {
+			const safariLike = isSafariBrowser() || isIOSBrowser()
+
 			// Calculate the total horizontal scroll distance
 			const scrollWidth = scroller.scrollWidth
 			const containerWidth = container.clientWidth
@@ -69,15 +72,16 @@ export function useHorizontalScrollJack(
 
 			// Optimize performance - use 3D transform for hardware acceleration (Safari)
 			scroller.style.willChange = 'transform'
-			scroller.style.transform = 'translate3d(0, 0, 0)'
 
 			// Create the horizontal scroll animation using gsap.to (more reliable than ScrollTrigger.create)
 			const animation = gsap.to(scroller, {
 				x: -horizontalDistance,
+				force3D: true,
 				ease: 'none',
 				scrollTrigger: {
 					trigger: container,
 					pin: true,
+					pinType: safariLike ? 'transform' : undefined,
 					pinSpacing: pinSpacing,
 					start: 'top top', // Start pinning when container hits top of viewport
 					end: `+=${scrollDuration}`,

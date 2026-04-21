@@ -127,9 +127,6 @@ useAnimatedGrid(sectionWrapperRef, gridRef, {
 	display: flex;
 	align-items: center;
 	z-index: 1;
-	/* Safari-specific fixes */
-	-webkit-transform: translate3d(0, 0, 0);
-	transform: translate3d(0, 0, 0);
 }
 
 .horizontal-scroller {
@@ -144,9 +141,6 @@ useAnimatedGrid(sectionWrapperRef, gridRef, {
 	padding-right: 5vw;
 	will-change: transform;
 	height: 100%; /* Take full height of container */
-	/* Safari hardware acceleration */
-	-webkit-transform: translate3d(0, 0, 0);
-	transform: translate3d(0, 0, 0);
 	-webkit-backface-visibility: hidden;
 	backface-visibility: hidden;
 }
