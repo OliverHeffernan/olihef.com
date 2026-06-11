@@ -42,7 +42,7 @@ function applyTheme() {
 		root.style.setProperty('--bg', 'white')
 		root.style.setProperty('--text', 'black')
 		root.style.setProperty('--border', '#ccc')
-		root.style.setProperty('--sec-text', 'rgb(200, 200, 200)')
+		root.style.setProperty('--sec-text', 'rgb(150, 150, 150)')
 		root.style.setProperty('--text-hover', 'rgb(150, 150, 150)')
 		root.style.setProperty('--active', 'rgb(100, 100, 100)')
 	}
