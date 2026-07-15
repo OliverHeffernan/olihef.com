@@ -133,7 +133,7 @@ defineProps<{
 
 /* Mask the coincident background-grid line after the final pinpoint. */
 .timeline-item:last-child .timeline-connector::after {
-	width: 100vw;
+	width: calc(50% + var(--timeline-end-padding, 5vw));
 	background-color: var(--bg);
 }
 

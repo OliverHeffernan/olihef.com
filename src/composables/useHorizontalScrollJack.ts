@@ -6,10 +6,10 @@ import { isIOSBrowser, isSafariBrowser } from '@/utils/platform'
 gsap.registerPlugin(ScrollTrigger)
 
 export interface HorizontalScrollJackOptions {
-	scrub?: number // Scrub smoothness (default: 1)
+	scrub?: boolean | number // Link movement to scroll, optionally with catch-up smoothing
 	markers?: boolean // Show debug markers (default: false)
-	scrollMultiplier?: number // Multiplier for scroll distance (default: 1.5)
-	horizontalDistanceMultiplier?: number // How much horizontal distance extends the vertical scroll
+	scrollMultiplier?: number | (() => number) // Multiplier for scroll distance (default: 1.5)
+	horizontalDistanceMultiplier?: number | (() => number) // How much horizontal distance extends the vertical scroll
 	pinSpacing?: boolean // Add spacing when pinned (default: true)
 	onProgress?: (progress: number) => void
 	onEnter?: () => void
@@ -53,11 +53,17 @@ export function useHorizontalScrollJack(
 		// Safari needs multiple animation frames + setTimeout for reliable layout calculations
 		const initScrollTrigger = () => {
 			const safariLike = isSafariBrowser() || isIOSBrowser()
+			const resolveNumber = (value: number | (() => number)) =>
+				typeof value === 'function' ? value() : value
+			const getHorizontalDistance = () => scroller.scrollWidth - container.clientWidth
+			const getScrollDuration = () =>
+				window.innerHeight * resolveNumber(scrollMultiplier) +
+				getHorizontalDistance() * resolveNumber(horizontalDistanceMultiplier)
 
 			// Calculate the total horizontal scroll distance
 			const scrollWidth = scroller.scrollWidth
 			const containerWidth = container.clientWidth
-			const horizontalDistance = scrollWidth - containerWidth
+			const horizontalDistance = getHorizontalDistance()
 
 			// If there's no horizontal scroll needed, don't create the effect
 			if (horizontalDistance <= 0) {
@@ -69,10 +75,7 @@ export function useHorizontalScrollJack(
 
 			// Calculate vertical scroll distance dynamically based on horizontal distance
 			// This ensures the scroll completes regardless of gap size or number of items
-			const baseScrollDuration = window.innerHeight * scrollMultiplier
-			// Increased multiplier to ensure all cards are fully scrollable
-			const scrollDuration =
-				baseScrollDuration + horizontalDistance * horizontalDistanceMultiplier
+			const scrollDuration = getScrollDuration()
 
 			console.log('📊 Horizontal scroll setup:', {
 				scrollWidth,
@@ -87,7 +90,7 @@ export function useHorizontalScrollJack(
 
 			// Create the horizontal scroll animation using gsap.to (more reliable than ScrollTrigger.create)
 			const animation = gsap.to(scroller, {
-				x: -horizontalDistance,
+				x: () => -getHorizontalDistance(),
 				force3D: true,
 				ease: 'none',
 				scrollTrigger: {
@@ -96,7 +99,7 @@ export function useHorizontalScrollJack(
 					pinType: safariLike ? 'transform' : undefined,
 					pinSpacing: pinSpacing,
 					start: 'top top', // Start pinning when container hits top of viewport
-					end: `+=${scrollDuration}`,
+					end: () => `+=${getScrollDuration()}`,
 					scrub: scrub, // Use scrub value from options
 					markers: markers,
 					anticipatePin: 1,
@@ -109,7 +112,8 @@ export function useHorizontalScrollJack(
 						scroller.style.willChange = 'transform'
 						onEnter?.()
 					},
-					onLeave: () => {
+					onLeave: (self) => {
+						self.animation?.progress(1)
 						scroller.style.willChange = 'auto'
 						onProgress?.(1)
 					},
@@ -117,7 +121,8 @@ export function useHorizontalScrollJack(
 						scroller.style.willChange = 'transform'
 						onEnter?.()
 					},
-					onLeaveBack: () => {
+					onLeaveBack: (self) => {
+						self.animation?.progress(0)
 						scroller.style.willChange = 'auto'
 						onProgress?.(0)
 					},

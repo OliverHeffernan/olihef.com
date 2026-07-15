@@ -36,9 +36,9 @@ onUnmounted(() => {
 
 // Initialize horizontal scroll effect
 useHorizontalScrollJack(containerRef, scrollerRef, {
-	scrub: 0.65,
-	scrollMultiplier: 0.9,
-	horizontalDistanceMultiplier: 0.3,
+	scrub: true,
+	scrollMultiplier: () => (window.innerWidth < 800 ? 0.8 : 0.9),
+	horizontalDistanceMultiplier: () => (window.innerWidth < 800 ? 0.27 : 0.3),
 	markers: false, // Set to true for debugging
 	onProgress: (progress) => {
 		timelineProgress.value = progress
@@ -277,6 +277,7 @@ useAnimatedGrid(sectionWrapperRef, gridRef, {
 
 .horizontal-scroller {
 	--timeline-item-gap: var(--massive-gap);
+	--timeline-end-padding: 5vw;
 
 	display: flex;
 	flex-direction: row;
@@ -303,6 +304,7 @@ useAnimatedGrid(sectionWrapperRef, gridRef, {
 
 	.horizontal-scroller {
 		--timeline-item-gap: var(--gap);
+		--timeline-end-padding: 2vw;
 
 		padding: 0 2vw;
 	}
