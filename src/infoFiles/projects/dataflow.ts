@@ -16,7 +16,7 @@ export default {
 			caption: 'A populated spreadsheet edited with Vim-like motions.',
 		},
 	],
-	githubLink: 'https://github.com/OliverHeffernan/paperWeight',
+	githubLink: 'https://github.com/OliverHeffernan/DataFlow',
 	topProject: true,
 	year: 2024,
 	articlePath: 'dataflow.md',
