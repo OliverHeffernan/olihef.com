@@ -12,10 +12,6 @@ Instead of only showing raw imagery, the product helps users identify:
 
 I designed and delivered the project solo, including product direction, frontend, backend, data persistence, and deployment.
 
-![StratVis analysis view](/stratvis-screenshots/analysisView.png)
-
-*Analysis view with map overlays and AI-generated points of interest.*
-
 ---
 
 ## Why I built it
@@ -32,10 +28,6 @@ I wanted to build a tool that made this workflow faster and more actionable: sel
 
 Users select an area directly on an interactive map, run analysis, and receive map-linked results.
 
-![StratVis area selection](/stratvis-screenshots/selectView.png)
-
-*Map selection flow for defining analysis bounds.*
-
 ### 2) Clear AI-generated outputs
 
 The app generates actionable insights in the following formats:
@@ -43,17 +35,9 @@ The app generates actionable insights in the following formats:
 - **Summary report:** A concise textual summary of the overall environmental situation in the selected area
 - **Metrics:** Quantitative and qualitative metrics that provide a quick overview of key environmental factors.
 
-![StratVis generated report](/stratvis-screenshots/report.png)
-
-*Generated output shown in the analysis experience.*
-
 ### 3) Session history for revisit and comparison
 
 Users can return to previous analysis sessions to review past outputs.
-
-![StratVis session history](/stratvis-screenshots/sessionView.png)
-
-*Session/snapshot history view.*
 
 ---
 

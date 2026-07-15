@@ -46,3 +46,13 @@ npm run build
 ```sh
 npm run lint
 ```
+
+## Project screenshots
+
+Project screenshots live in `public/project-screenshots/<project-slug>/`. Use lowercase,
+kebab-case filenames and keep the source for each screenshot in the project's
+`screenshots` array under `src/infoFiles/projects/`.
+
+Each screenshot must have descriptive alt text. Captions are optional. Prefer a
+consistent 1440 x 900 viewport and optimized WebP images for new screenshots; use PNG
+when lossless detail or transparency is required.
