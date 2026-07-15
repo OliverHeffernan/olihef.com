@@ -21,9 +21,8 @@ useScrollReveal('.images', { ...options, delay: 0.7 })
 				<p class="boxP">
 					Second-year Software Engineering student at Victoria University of Wellington
 					with A+ average and Dean's List honours. Built and deployed multiple full-stack
-					applications (Vue.js, Rust, Supabase) with live demos on GitHub. Seeking
-					front-end/back-end internship to apply problem-solving skills and passion for
-					user-focused solutions.
+					applications with live demos on GitHub. Seeking internship to apply
+					problem-solving skills and passion for user-focused solutions.
 				</p>
 				<div class="images">
 					<ImageBox
