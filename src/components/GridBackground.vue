@@ -1,19 +1,18 @@
 <script setup lang="ts">
-import { useParallax } from '@/composables/useScrollAnimations';
+import { useParallax } from '@/composables/useScrollAnimations'
 const props = defineProps<{
 	fixed?: boolean
 }>()
 
-if (!props.fixed) {
-	useParallax('.gridBackground', { y: 50, speed: 0.9, scrub: 2 });
-	useParallax('.gridBackground.secondary', { y: 25, speed: 1.3, scrub: 2 });
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+if (!props.fixed && !reduceMotion) {
+	useParallax('.gridBackground', { y: 50, speed: 0.9, scrub: 2 })
+	useParallax('.gridBackground.secondary', { y: 25, speed: 1.3, scrub: 2 })
 }
 </script>
 <template>
-	<div
-		class="gridBackground primary"
-		:class="{ fixed: fixed }"
-	></div>
+	<div class="gridBackground primary" :class="{ fixed: fixed }"></div>
 </template>
 <style scoped>
 .gridBackground {
@@ -35,5 +34,4 @@ if (!props.fixed) {
 	position: fixed;
 	top: 0;
 }
-
 </style>

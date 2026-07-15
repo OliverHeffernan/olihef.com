@@ -180,6 +180,8 @@ useAnimatedGrid(sectionWrapperRef, gridRef, {
 }
 
 .horizontal-container {
+	--timeline-card-height: 280px;
+
 	position: relative;
 	width: 100%;
 	height: 80vh; /* Visual height of the pinned section */
@@ -292,9 +294,11 @@ useAnimatedGrid(sectionWrapperRef, gridRef, {
 }
 
 /* Responsive adjustments */
-@media (max-width: 768px) {
+@media (max-width: 784px) {
 	.horizontal-container {
-		height: 70vh;
+		--timeline-card-height: 280px;
+
+		height: max(70svh, calc(var(--timeline-card-height) + 100px));
 	}
 
 	.horizontal-scroller {
@@ -318,6 +322,14 @@ useAnimatedGrid(sectionWrapperRef, gridRef, {
 
 	.progress-track {
 		width: 80px;
+	}
+}
+
+@media (max-width: 480px) {
+	.horizontal-container {
+		--timeline-card-height: clamp(370px, calc(950px - 155vw), 460px);
+
+		height: max(70svh, calc(var(--timeline-card-height) + 100px));
 	}
 }
 

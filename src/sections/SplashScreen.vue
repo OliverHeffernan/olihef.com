@@ -53,7 +53,11 @@ const stopBoost = () => {
 	}, 10)
 }
 
-watch(skill, (newSkill, oldSkill) => {
+const closeSkill = () => {
+	skill.value = ''
+}
+
+watch(skill, (newSkill) => {
 	if (!newSkill) {
 		// Skill cleared - slide out
 		isVisible.value = false
@@ -87,69 +91,79 @@ watch(skill, (newSkill, oldSkill) => {
 			:key="displayedSkill"
 			:skillKey="displayedSkill"
 			:visible="isVisible"
+			@close="closeSkill"
 		/>
-		<div class="icon-container">
-			<RotIcons :boost="boost" @skillChange="skill = $event" />
-		</div>
-		<button
-			class="boost"
-			data-magnetic
-			@mousedown="startBoost"
-			@mouseup="stopBoost"
-			@mouseleave="stopBoost"
-			@touchstart="startBoost"
-			@touchend="stopBoost"
-		>
-			<svg class="progress-ring" viewBox="0 0 120 120">
-				<circle class="progress-ring-bg" cx="60" cy="60" r="54" />
-				<circle
-					class="progress-ring-circle"
-					cx="60"
-					cy="60"
-					r="54"
-					:style="{
-						strokeDashoffset: 339.292 - (339.292 * progress) / 100,
-					}"
-					:class="{ complete: isComplete }"
-				/>
-			</svg>
-			<i class="fa-solid fa-rocket"></i>
-		</button>
-		<div class="headBorder">
-			<div class="content">
-				<span>
-					<h1>Oliver Heffernan</h1>
-					<h3>Software Engineer</h3>
-				</span>
+		<div class="orbit-stage">
+			<div class="icon-container">
+				<RotIcons :boost="boost" :active-skill="skill" @skillChange="skill = $event" />
+			</div>
+			<button
+				class="boost"
+				data-magnetic
+				aria-label="Hold to boost the skill orbit"
+				@mousedown="startBoost"
+				@mouseup="stopBoost"
+				@mouseleave="stopBoost"
+				@touchstart.prevent="startBoost"
+				@touchend.prevent="stopBoost"
+				@touchcancel="stopBoost"
+			>
+				<svg class="progress-ring" viewBox="0 0 120 120" aria-hidden="true">
+					<circle class="progress-ring-bg" cx="60" cy="60" r="54" />
+					<circle
+						class="progress-ring-circle"
+						cx="60"
+						cy="60"
+						r="54"
+						:style="{
+							strokeDashoffset: 339.292 - (339.292 * progress) / 100,
+						}"
+						:class="{ complete: isComplete }"
+					/>
+				</svg>
+				<i class="fa-solid fa-rocket"></i>
+			</button>
+			<div class="headBorder">
+				<div class="content">
+					<span>
+						<h1>Oliver Heffernan</h1>
+						<h3>Software Engineer</h3>
+					</span>
+				</div>
 			</div>
 		</div>
 	</div>
 </template>
 <style scoped>
 .splash-screen {
+	--orbit-size: 75vw;
+
 	position: relative;
 	width: 100%;
 	height: 100vh;
+	height: 100svh;
 	overflow: hidden;
 }
-.icon-container {
+
+.orbit-stage {
 	position: absolute;
 	top: 65%;
 	left: 50%;
 	transform: translateX(-50%);
-	width: 75vw;
-	height: 75vw;
+	width: var(--orbit-size);
+	height: var(--orbit-size);
+}
+
+.icon-container {
+	position: absolute;
+	inset: 0;
 	z-index: 50;
 }
 
 .headBorder {
 	z-index: 100;
 	position: absolute;
-	top: 65%;
-	left: 50%;
-	transform: translateX(-50%);
-	width: 75vw;
-	height: 75vw;
+	inset: 0;
 	text-align: center;
 	border-radius: 50%;
 	/*box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);*/
@@ -169,9 +183,9 @@ watch(skill, (newSkill, oldSkill) => {
 	align-items: center;
 	justify-content: space-around;
 	pointer-events: none;
-	height: 35vh;
+	height: min(35vh, 100%);
 
-	padding: 40px 0;
+	padding: clamp(24px, 5vh, 40px) 0;
 }
 
 .content > * {
@@ -179,10 +193,21 @@ watch(skill, (newSkill, oldSkill) => {
 	padding: 0;
 }
 
+.content h1 {
+	font-size: clamp(2rem, 5vw, 3.5rem);
+	line-height: 1.05;
+	margin: 0;
+}
+
+.content h3 {
+	font-size: clamp(1rem, 2vw, 1.35rem);
+	margin: var(--minor-gap) 0 0;
+}
+
 .boost {
 	position: absolute;
-	top: calc(65% - 37.5vw + 40px);
-	left: calc(50% - 37.5vw + 40px);
+	top: max(-130px, calc(var(--orbit-size) * -0.5 + 40px));
+	left: max(40px, calc(var(--orbit-size) * 0.5 - 410px));
 	z-index: 101;
 	color: var(--text);
 	user-select: none;
@@ -196,13 +221,7 @@ watch(skill, (newSkill, oldSkill) => {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-}
-
-@media (min-width: 600px) {
-	.boost {
-		top: max(120px, calc(65% - 130px));
-		left: max(40px, calc(50% - 450px + 40px));
-	}
+	touch-action: manipulation;
 }
 
 .boost i {
@@ -286,6 +305,95 @@ watch(skill, (newSkill, oldSkill) => {
 	}
 	100% {
 		transform: rotate(-45deg) translateY(0);
+	}
+}
+
+@media (min-width: 481px) and (max-width: 900px) {
+	.boost {
+		top: -220px;
+		left: 20px;
+	}
+}
+
+@media (max-width: 480px) {
+	.splash-screen {
+		--orbit-size: clamp(260px, 82vw, 330px);
+
+		height: 100dvh;
+		min-height: 500px;
+	}
+
+	.orbit-stage {
+		top: auto;
+		bottom: max(76px, env(safe-area-inset-bottom));
+	}
+
+	.content {
+		height: 100%;
+		justify-content: center;
+		padding: var(--gap) 10px;
+	}
+
+	.content h1 {
+		font-size: clamp(1.45rem, 7.2vw, 2rem);
+	}
+
+	.content h3 {
+		font-size: clamp(0.85rem, 4vw, 1rem);
+	}
+
+	.boost {
+		top: -120px;
+		left: -8px;
+		width: 60px;
+		height: 60px;
+		font-size: 1.1rem;
+	}
+
+	.progress-ring {
+		width: 60px;
+		height: 60px;
+	}
+}
+
+@media (max-height: 700px) and (max-width: 600px) {
+	.splash-screen {
+		--orbit-size: clamp(235px, 76vw, 270px);
+	}
+
+	.orbit-stage {
+		bottom: max(44px, env(safe-area-inset-bottom));
+	}
+
+	.boost {
+		top: calc(var(--orbit-size) * -0.5 - 20px);
+	}
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+	.splash-screen {
+		--orbit-size: clamp(180px, 48vh, 230px);
+		min-height: 320px;
+	}
+
+	.orbit-stage {
+		top: auto;
+		bottom: 40px;
+	}
+
+	.boost {
+		top: -100px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.boost i,
+	.progress-ring-circle {
+		transition: none;
+	}
+
+	.progress-ring-bg {
+		animation: none;
 	}
 }
 </style>

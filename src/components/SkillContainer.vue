@@ -1,13 +1,21 @@
 <template>
 	<div
-		ref="containerRef"
 		class="skill-container"
 		:class="{
 			fullScreen: fullScreen,
 			small: !fullScreen,
+			visible: visible,
 		}"
 		v-if="skill"
 	>
+		<button
+			class="close-button"
+			type="button"
+			aria-label="Close skill details"
+			@click="emit('close')"
+		>
+			<i class="fa-solid fa-xmark" aria-hidden="true"></i>
+		</button>
 		<!--
 		<div class="button-container">
 			<i v-if="!fullScreen" class="fa-solid fa-expand exButton" @click="fullScreen = true"></i>
@@ -32,8 +40,7 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { ref, watch, onMounted, type Ref } from 'vue'
-import gsap from 'gsap'
+import { ref, watch, type Ref } from 'vue'
 import Info from '@/classes/Info'
 import ProjectSlideShow from './ProjectSlideShow.vue'
 
@@ -42,8 +49,11 @@ const props = defineProps<{
 	visible: boolean
 }>()
 
+const emit = defineEmits<{
+	(event: 'close'): void
+}>()
+
 const fullScreen: Ref<boolean> = ref(false)
-const containerRef: Ref<HTMLElement | null> = ref(null)
 
 // Disable body scroll when fullscreen
 watch(fullScreen, (isFullScreen) => {
@@ -54,28 +64,6 @@ watch(fullScreen, (isFullScreen) => {
 	}
 })
 
-// Animate visibility with GSAP
-watch(
-	() => props.visible,
-	(isVisible) => {
-		if (!containerRef.value) return
-
-		if (isVisible) {
-			gsap.to(containerRef.value, {
-				top: 'var(--border-radius)',
-				duration: 0.5,
-				ease: 'power2.out',
-			})
-		} else {
-			gsap.to(containerRef.value, {
-				top: '-100%',
-				duration: 0.4,
-				ease: 'power2.in',
-			})
-		}
-	},
-)
-
 const skill = Info.skills.get(props.skillKey)
 const projects = Info.projects.filter((project) => project.skills.includes(props.skillKey))
 </script>
@@ -85,11 +73,36 @@ const projects = Info.projects.filter((project) => project.skills.includes(props
 	box-sizing: border-box;
 	display: flex;
 	flex-direction: column;
-	top: -100%;
+	top: var(--border-radius);
+	left: 50%;
+	transform: translate(-50%, calc(-100% - var(--gap)));
 	background-color: var(--bg);
 	border: 1px solid var(--border);
 	border-radius: var(--major-border-radius);
 	overflow: hidden;
+	z-index: 500;
+	transition: transform 450ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.skill-container.visible {
+	transform: translate(-50%, 0);
+}
+
+.close-button {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	width: 44px;
+	height: 44px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: 0;
+	border-radius: 50%;
+	background: var(--bg);
+	color: var(--text);
+	cursor: pointer;
+	z-index: 11;
 }
 
 .button-container {
@@ -111,8 +124,6 @@ const projects = Info.projects.filter((project) => project.skills.includes(props
 
 .small {
 	width: min(calc(100% - var(--minor-gap) * 2), 500px);
-	left: 50%;
-	transform: translateX(-50%);
 	height: 290px;
 	overflow: hidden;
 }
@@ -126,6 +137,10 @@ const projects = Info.projects.filter((project) => project.skills.includes(props
 	z-index: 1001;
 	padding: none;
 	border-radius: 0;
+}
+
+.fullScreen.visible {
+	transform: none;
 }
 
 .skill-container .title {
@@ -146,5 +161,42 @@ const projects = Info.projects.filter((project) => project.skills.includes(props
 .exButton {
 	font-size: 20px;
 	cursor: pointer;
+}
+
+@media (max-width: 480px), (hover: none), (pointer: coarse) {
+	.skill-container.small {
+		width: calc(100% - var(--gap));
+		height: min(320px, calc(100dvh - 110px));
+		border-radius: var(--major-border-radius);
+	}
+
+	.content {
+		padding: 16px;
+		padding-top: 12px;
+	}
+
+	.skill-container .title {
+		align-items: center;
+		padding-right: 42px;
+	}
+
+	.skill-container .title h2 {
+		font-size: 1.2rem;
+	}
+
+	.skill-container .title i {
+		font-size: 48px;
+	}
+
+	.skill-container img {
+		width: 48px;
+		height: 48px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.skill-container {
+		transition: none;
+	}
 }
 </style>

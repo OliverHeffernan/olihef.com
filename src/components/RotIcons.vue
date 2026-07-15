@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted, onUnmounted } from 'vue'
 import type { Ref } from 'vue'
 import gsap from 'gsap'
 import Info from '@/classes/Info'
@@ -7,6 +7,7 @@ import RotIcon from './RotIcon.vue'
 
 const props = defineProps<{
 	boost: boolean
+	activeSkill: string
 }>()
 
 const emit = defineEmits<{
@@ -18,6 +19,8 @@ const speedState = { current: 0, target: 0.02 }
 const topSpeed = 0.02
 const boostSpeed = 0.15
 let pause = false
+const canHover = ref(false)
+const reduceMotion = ref(false)
 
 function setPause(value: boolean, skillKey: string) {
 	pause = value
@@ -43,6 +46,24 @@ function setPause(value: boolean, skillKey: string) {
 	}
 }
 
+function showHoveredSkill(skillKey: string) {
+	if (!canHover.value) return
+	setPause(true, skillKey)
+}
+
+function selectSkill(skillKey: string, event: MouseEvent) {
+	// Fine pointers already select on hover; detail === 0 preserves keyboard activation.
+	if (canHover.value && event.detail > 0) return
+
+	if (props.activeSkill === skillKey) {
+		setPause(false, '')
+		emit('skillChange', '')
+		return
+	}
+
+	setPause(true, skillKey)
+}
+
 // convert Info.skills to an array of values
 const skillsArray = Array.from(Info.skills.values())
 skillsArray.push(...skillsArray)
@@ -51,6 +72,7 @@ skillsArray.push(...skillsArray)
 watch(
 	() => props.boost,
 	(newBoost) => {
+		if (reduceMotion.value) return
 		speedState.target = newBoost ? boostSpeed : topSpeed
 		if (!pause) {
 			// Kill any existing tweens before starting a new one
@@ -64,13 +86,28 @@ watch(
 	},
 )
 
+watch(
+	() => props.activeSkill,
+	(activeSkill) => {
+		if (!activeSkill && pause) setPause(false, '')
+	},
+)
+
+const updateAngle = () => {
+	if (!reduceMotion.value) angle.value += speedState.current
+}
+
 // Start the animation loop with GSAP ticker
 onMounted(() => {
-	speedState.current = topSpeed
+	canHover.value = window.matchMedia('(hover: hover) and (pointer: fine)').matches
+	reduceMotion.value = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+	speedState.current = reduceMotion.value ? 0 : topSpeed
+	gsap.ticker.add(updateAngle)
+})
 
-	gsap.ticker.add(() => {
-		angle.value += speedState.current
-	})
+onUnmounted(() => {
+	gsap.ticker.remove(updateAngle)
+	gsap.killTweensOf(speedState)
 })
 </script>
 <template>
@@ -80,9 +117,11 @@ onMounted(() => {
 			:key="index"
 			:startAngle="index * (360 / skillsArray.length)"
 			:icon="skill.icon"
+			:label="skill.name"
 			:offset="angle"
-			@hoverEnter="setPause(true, skill.key)"
+			@hoverEnter="showHoveredSkill(skill.key)"
 			@hoverLeave="setPause(false, skill.key)"
+			@select="selectSkill(skill.key, $event)"
 		/>
 	</div>
 </template>

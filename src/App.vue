@@ -6,7 +6,7 @@ import { LENIS_ENABLED } from '@/config/features'
 import 'lenis/dist/lenis.css'
 import useLenis from '@/lenis/useLenis'
 
-const lenis = useLenis()
+useLenis()
 
 const isDark = ref(false)
 
@@ -75,7 +75,7 @@ function toggleTheme() {
 	--border-radius: 10px;
 	--major-border-radius: 20px;
 	--yellow: #ffcc00;
-	--accent: #41B883;
+	--accent: #41b883;
 
 	--border: #ccc;
 	--text: black;
@@ -168,6 +168,22 @@ body.lenis-enabled {
 	transform: scale(0.95);
 }
 
+@media (max-width: 480px), (hover: none), (pointer: coarse) {
+	.theme-toggle {
+		top: calc(env(safe-area-inset-top) + var(--minor-gap));
+		right: calc(env(safe-area-inset-right) + var(--minor-gap));
+		width: 48px;
+		height: 48px;
+		font-size: 18px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.theme-toggle {
+		transition: none;
+	}
+}
+
 .boxHeader {
 	box-sizing: border-box;
 	padding: var(--minor-gap);
@@ -203,5 +219,4 @@ hr {
 .router-link {
 	color: var(--accent);
 }
-
 </style>

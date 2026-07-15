@@ -5,8 +5,8 @@ import type Project from '@/classes/Project'
 
 const slide: Ref<number> = ref<number>(0)
 
-const props = defineProps<{
-	projects: Project[],
+defineProps<{
+	projects: Project[]
 	fullScreen: boolean
 }>()
 
@@ -36,26 +36,15 @@ function goToSlide(index: number) {
 			/>
 		</div>
 		<div class="slides-container">
-			<div
-				class="slides"
-				:style="{ transform:
-					`translateY(calc(-${slideOffset}px))` }"
-			>
+			<div class="slides" :style="{ transform: `translateY(calc(-${slideOffset}px))` }">
 				<div v-for="(project, index) in projects" :key="index" class="slide">
-					<ProjectContainer
-						:project="project"
-						inSlideShow
-					/>
+					<ProjectContainer :project="project" inSlideShow />
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="projects-container" v-else>
-		<ProjectContainer
-			v-for="(project, index) in projects"
-			:key="index"
-			:project="project"
-		/>
+		<ProjectContainer v-for="(project, index) in projects" :key="index" :project="project" />
 	</div>
 </template>
 <style scoped>
@@ -116,5 +105,44 @@ function goToSlide(index: number) {
 	display: flex;
 	flex-direction: column;
 	gap: var(--minor-gap);
+}
+
+@media (max-width: 480px), (hover: none), (pointer: coarse) {
+	.buttons {
+		gap: 0;
+	}
+
+	.slideBtn {
+		position: relative;
+		width: 40px;
+		height: 40px;
+		padding: 0;
+		border: 0;
+		background: transparent;
+	}
+
+	.slideBtn::before {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 13px;
+		height: 13px;
+		transform: translate(-50%, -50%);
+		border: 1px solid var(--border);
+		border-radius: 50%;
+		background: var(--bg);
+	}
+
+	.slideBtn.active::before {
+		background: var(--border);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.slides,
+	.slideBtn {
+		transition: none;
+	}
 }
 </style>

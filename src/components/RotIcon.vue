@@ -3,33 +3,33 @@ const props = defineProps<{
 	startAngle: number
 	offset: number
 	icon: string
+	label: string
 }>()
 
 const emit = defineEmits<{
-	(event: 'hoverEnter'): void;
-	(event: 'hoverLeave'): void;
+	(event: 'hoverEnter'): void
+	(event: 'hoverLeave'): void
+	(event: 'select', pointerEvent: MouseEvent): void
 }>()
-
 </script>
 <template>
 	<div class="parent">
 		<div class="rotating" :style="{ transform: `rotate(${props.startAngle}deg)` }">
-			<div
+			<button
+				type="button"
 				class="icon data-magnetic"
-				@click="emit('hoverEnter')"
+				:aria-label="`Show ${label} skill details`"
+				@click="emit('select', $event)"
 				@mouseenter="emit('hoverEnter')"
 				@mouseleave="emit('hoverLeave')"
 			>
-				<i
-					v-if="icon === 'rust/rust-original'"
-					class="devicon-rust-original display"
-				></i>
+				<i v-if="icon === 'rust/rust-original'" class="devicon-rust-original display"></i>
 				<img
 					v-else
 					class="display"
 					:src="`https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${icon}.svg`"
 				/>
-			</div>
+			</button>
 		</div>
 	</div>
 </template>
@@ -50,7 +50,7 @@ const emit = defineEmits<{
 
 .icon {
 	position: absolute;
-	bottom: calc(100% + 50px);
+	bottom: calc(100% + var(--orbit-icon-gap, 50px));
 	left: 50%;
 	transform: translateX(-50%);
 	font-size: 30px;
@@ -60,6 +60,11 @@ const emit = defineEmits<{
 	align-items: center;
 	justify-content: center;
 	pointer-events: auto;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	color: var(--text);
+	cursor: pointer;
 }
 
 .icon .display {
@@ -72,13 +77,45 @@ const emit = defineEmits<{
 
 	border: 1px solid var(--border);
 	background-color: var(--bg);
-	transition: background-color 0.3s ease, scale 0.3s ease;
+	transition:
+		background-color 0.3s ease,
+		scale 0.3s ease;
 	font-size: 50px;
 }
-
 
 .icon:hover .display {
 	background-color: var(--border);
 	scale: 1.1;
+}
+
+@media (max-width: 480px), (hover: none), (pointer: coarse) {
+	.icon {
+		bottom: calc(100% + var(--orbit-icon-gap, 18px));
+		width: 56px;
+		height: 56px;
+	}
+
+	.icon .display {
+		box-sizing: border-box;
+		width: 44px;
+		height: 44px;
+		padding: 7px;
+		font-size: 38px;
+	}
+}
+
+@media (max-height: 700px) and (max-width: 600px) {
+	.icon {
+		bottom: calc(100% + 12px);
+		width: 52px;
+		height: 52px;
+	}
+
+	.icon .display {
+		width: 40px;
+		height: 40px;
+		padding: 6px;
+		font-size: 34px;
+	}
 }
 </style>

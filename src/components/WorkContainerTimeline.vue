@@ -40,6 +40,7 @@ defineProps<{
 }
 
 .content-card {
+	box-sizing: border-box;
 	background-color: var(--bg);
 	border: 1px solid var(--border);
 	border-radius: var(--border-radius);
@@ -49,7 +50,7 @@ defineProps<{
 	flex-direction: column;
 	gap: var(--minor-gap);
 	position: relative;
-	height: 180px; /* ← FIXED HEIGHT: All cards same height */
+	height: var(--timeline-card-height, 180px);
 	overflow: hidden; /* Hide content that doesn't fit */
 }
 
@@ -80,9 +81,23 @@ defineProps<{
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	width: 100%;
 	margin: 0;
 	flex-shrink: 0;
 	height: var(--timeline-line-offset); /* Height matches line offset for perfect alignment */
+}
+
+/* Draw from this pinpoint to the next one, using the pinpoint itself as the vertical anchor. */
+.timeline-connector::after {
+	content: '';
+	position: absolute;
+	left: 50%;
+	bottom: -1px;
+	width: calc(100% + var(--timeline-item-gap, var(--massive-gap)));
+	height: 2px;
+	background-color: var(--border);
+	z-index: 1;
+	pointer-events: none;
 }
 
 .vertical-line {
@@ -116,36 +131,19 @@ defineProps<{
 	flex-shrink: 0;
 }
 
-/* Add horizontal connecting line between items using pseudo-element */
-.timeline-item::after {
-	content: '';
-	position: absolute;
-	top: calc(50% + var(--timeline-line-offset)); /* FORMULA: center + offset = line position */
-	left: 50%;
-	/* Reach exactly from this dot to the next dot: one item width plus the flex gap. */
-	width: calc(100% + var(--timeline-item-gap, var(--massive-gap)));
-	height: 2px;
-	background-color: var(--border);
-	z-index: 1;
-	pointer-events: none;
-}
-
-/* Remove line after last item */
-.timeline-item:last-child::after {
-	display: none;
+/* Mask the coincident background-grid line after the final pinpoint. */
+.timeline-item:last-child .timeline-connector::after {
+	width: 100vw;
+	background-color: var(--bg);
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+@media (max-width: 784px) {
 	.timeline-item {
 		--timeline-line-offset: 25px; /* ADJUST THIS for mobile positioning */
 		min-width: 80vw;
 		max-width: 85vw;
 		width: 80vw;
-	}
-
-	.content-card {
-		height: 140px; /* ← FIXED HEIGHT for mobile: All cards same height */
 	}
 
 	.content-card h2 {
