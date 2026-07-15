@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, onUnmounted, ref } from 'vue'
 import WorkContainer from '@/components/WorkContainerTimeline.vue'
 import { useHorizontalScrollJack } from '@/composables/useHorizontalScrollJack'
 import { useAnimatedGrid } from '@/composables/useAnimatedGrid'
@@ -8,12 +8,42 @@ const containerRef = ref<HTMLElement | null>(null)
 const scrollerRef = ref<HTMLElement | null>(null)
 const sectionWrapperRef = ref<HTMLElement | null>(null)
 const gridRef = ref<HTMLElement | null>(null)
+const timelineProgress = ref(0)
+const showNudge = ref(false)
+const totalTimelineItems = 4
+let hasPlayedNudge = false
+let nudgeTimeout: number | undefined
+
+const currentTimelineItem = computed(() =>
+	Math.min(totalTimelineItems, Math.floor(timelineProgress.value * totalTimelineItems) + 1),
+)
+const progressPercentage = computed(() => Math.round(timelineProgress.value * 100))
+const hasStartedScrolling = computed(() => timelineProgress.value > 0.035)
+
+function playTimelineNudge() {
+	if (hasPlayedNudge) return
+
+	hasPlayedNudge = true
+	showNudge.value = true
+	nudgeTimeout = window.setTimeout(() => {
+		showNudge.value = false
+	}, 900)
+}
+
+onUnmounted(() => {
+	if (nudgeTimeout !== undefined) window.clearTimeout(nudgeTimeout)
+})
 
 // Initialize horizontal scroll effect
 useHorizontalScrollJack(containerRef, scrollerRef, {
-	scrub: 1.5, // Smoother transitions for Safari
-	scrollMultiplier: 1.5,
+	scrub: 0.65,
+	scrollMultiplier: 0.9,
+	horizontalDistanceMultiplier: 0.3,
 	markers: false, // Set to true for debugging
+	onProgress: (progress) => {
+		timelineProgress.value = progress
+	},
+	onEnter: playTimelineNudge,
 })
 
 // Initialize animated grid (no hover effects, stationary background)
@@ -32,7 +62,37 @@ useAnimatedGrid(sectionWrapperRef, gridRef, {
 		<div class="margins">
 			<!--<h1 class="boxHeader">Work Experience</h1>-->
 		</div>
-		<div ref="containerRef" class="horizontal-container">
+		<div
+			ref="containerRef"
+			class="horizontal-container"
+			:class="{ 'hint-active': showNudge }"
+		>
+			<div class="timeline-navigation">
+				<p
+					class="timeline-guide"
+					:class="{ 'is-hidden': hasStartedScrolling }"
+					:aria-hidden="hasStartedScrolling"
+				>
+					<span>Keep scrolling</span>
+					<span class="direction" aria-hidden="true">↓ to move through my timeline →</span>
+				</p>
+				<div class="timeline-progress">
+					<span class="timeline-count">{{ currentTimelineItem }} of {{ totalTimelineItems }}</span>
+					<div
+						class="progress-track"
+						role="progressbar"
+						aria-label="Timeline progress"
+						:aria-valuenow="progressPercentage"
+						aria-valuemin="0"
+						aria-valuemax="100"
+					>
+						<span
+							class="progress-fill"
+							:style="{ transform: `scaleX(${timelineProgress})` }"
+						></span>
+					</div>
+				</div>
+			</div>
 			<div ref="scrollerRef" class="horizontal-scroller">
 				<WorkContainer
 					role="Oliver Heffernan"
@@ -129,11 +189,97 @@ useAnimatedGrid(sectionWrapperRef, gridRef, {
 	z-index: 1;
 }
 
+.timeline-navigation {
+	position: absolute;
+	top: var(--gap);
+	left: max(calc((100vw - 800px) / 2), 5vw);
+	right: 5vw;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--gap);
+	z-index: 3;
+	pointer-events: none;
+}
+
+.timeline-guide {
+	display: flex;
+	align-items: center;
+	gap: var(--minor-gap);
+	margin: 0;
+	padding: 8px 12px;
+	border: 1px solid var(--border);
+	border-radius: 999px;
+	background: var(--bg);
+	/*font-family: var(--mono-font);*/
+	font-size: 1.0rem;
+	color: var(--text);
+	transition:
+		opacity 250ms ease,
+		transform 250ms ease;
+}
+
+.timeline-guide.is-hidden {
+	opacity: 0;
+	transform: translateY(-8px);
+}
+
+.direction {
+	color: var(--accent);
+}
+
+.timeline-progress {
+	display: flex;
+	align-items: center;
+	gap: var(--minor-gap);
+	margin-left: auto;
+}
+
+.timeline-count {
+	font-family: var(--mono-font);
+	font-size: 0.8rem;
+	color: var(--sec-text);
+	white-space: nowrap;
+}
+
+.progress-track {
+	width: clamp(90px, 12vw, 160px);
+	height: 3px;
+	overflow: hidden;
+	background: var(--border);
+	border-radius: 999px;
+}
+
+.progress-fill {
+	display: block;
+	width: 100%;
+	height: 100%;
+	background: var(--accent);
+	transform: scaleX(0);
+	transform-origin: left center;
+}
+
+.hint-active :deep(.timeline-item:first-child) {
+	animation: timeline-nudge 800ms ease-in-out;
+}
+
+@keyframes timeline-nudge {
+	0%,
+	100% {
+		transform: translateX(0);
+	}
+	45% {
+		transform: translateX(28px);
+	}
+}
+
 .horizontal-scroller {
+	--timeline-item-gap: var(--massive-gap);
+
 	display: flex;
 	flex-direction: row;
 	align-items: stretch; /* Make all children same height */
-	gap: var(--massive-gap);
+	gap: var(--timeline-item-gap);
 	/* Calculate left padding to align with .margins class */
 	/* .margins is min(800px, 90%), centered with margin: 0 auto */
 	/* So left offset = max((100vw - 800px) / 2, 5vw) */
@@ -152,8 +298,36 @@ useAnimatedGrid(sectionWrapperRef, gridRef, {
 	}
 
 	.horizontal-scroller {
-		gap: var(--gap);
+		--timeline-item-gap: var(--gap);
+
 		padding: 0 2vw;
+	}
+
+	.timeline-navigation {
+		left: 5vw;
+		right: 5vw;
+		align-items: flex-end;
+	}
+
+	.timeline-guide {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 2px;
+		font-size: 0.72rem;
+	}
+
+	.progress-track {
+		width: 80px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.timeline-guide {
+		transition: none;
+	}
+
+	.hint-active :deep(.timeline-item:first-child) {
+		animation: none;
 	}
 }
 </style>

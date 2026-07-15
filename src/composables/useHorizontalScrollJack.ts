@@ -9,7 +9,10 @@ export interface HorizontalScrollJackOptions {
 	scrub?: number // Scrub smoothness (default: 1)
 	markers?: boolean // Show debug markers (default: false)
 	scrollMultiplier?: number // Multiplier for scroll distance (default: 1.5)
+	horizontalDistanceMultiplier?: number // How much horizontal distance extends the vertical scroll
 	pinSpacing?: boolean // Add spacing when pinned (default: true)
+	onProgress?: (progress: number) => void
+	onEnter?: () => void
 }
 
 /**
@@ -26,7 +29,15 @@ export function useHorizontalScrollJack(
 	scrollerRef: Ref<HTMLElement | null>,
 	options: HorizontalScrollJackOptions = {},
 ): ScrollTrigger | null {
-	const { scrub = 1, markers = false, scrollMultiplier = 1.5, pinSpacing = true } = options
+	const {
+		scrub = 1,
+		markers = false,
+		scrollMultiplier = 1.5,
+		horizontalDistanceMultiplier = 0.5,
+		pinSpacing = true,
+		onProgress,
+		onEnter,
+	} = options
 
 	let trigger: ScrollTrigger | null = null
 
@@ -60,7 +71,8 @@ export function useHorizontalScrollJack(
 			// This ensures the scroll completes regardless of gap size or number of items
 			const baseScrollDuration = window.innerHeight * scrollMultiplier
 			// Increased multiplier to ensure all cards are fully scrollable
-			const scrollDuration = baseScrollDuration + horizontalDistance * 0.5
+			const scrollDuration =
+				baseScrollDuration + horizontalDistance * horizontalDistanceMultiplier
 
 			console.log('📊 Horizontal scroll setup:', {
 				scrollWidth,
@@ -90,17 +102,24 @@ export function useHorizontalScrollJack(
 					anticipatePin: 1,
 					invalidateOnRefresh: true, // Recalculate on refresh (important for Safari)
 					fastScrollEnd: true, // Prevent snap back on fast scrolling (Safari)
+					onUpdate: (self) => {
+						onProgress?.(self.progress)
+					},
 					onEnter: () => {
 						scroller.style.willChange = 'transform'
+						onEnter?.()
 					},
 					onLeave: () => {
 						scroller.style.willChange = 'auto'
+						onProgress?.(1)
 					},
 					onEnterBack: () => {
 						scroller.style.willChange = 'transform'
+						onEnter?.()
 					},
 					onLeaveBack: () => {
 						scroller.style.willChange = 'auto'
+						onProgress?.(0)
 					},
 				},
 			})

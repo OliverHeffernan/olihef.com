@@ -34,7 +34,7 @@ function applyTheme() {
 	if (isDark.value) {
 		root.style.setProperty('--bg', 'rgb(20, 20, 20)')
 		root.style.setProperty('--text', 'white')
-		root.style.setProperty('--border', 'rgb(50, 50, 50)')
+		root.style.setProperty('--border', 'rgb(75, 75, 75)')
 		root.style.setProperty('--sec-text', 'rgb(150, 150, 150)')
 		root.style.setProperty('--text-hover', 'rgb(200, 200, 200)')
 		root.style.setProperty('--active', 'rgb(255, 255, 255)')

@@ -122,7 +122,8 @@ defineProps<{
 	position: absolute;
 	top: calc(50% + var(--timeline-line-offset)); /* FORMULA: center + offset = line position */
 	left: 50%;
-	width: 100vw;
+	/* Reach exactly from this dot to the next dot: one item width plus the flex gap. */
+	width: calc(100% + var(--timeline-item-gap, var(--massive-gap)));
 	height: 2px;
 	background-color: var(--border);
 	z-index: 1;
